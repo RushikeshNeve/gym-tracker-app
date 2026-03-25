@@ -4,23 +4,37 @@ from datetime import date
 
 import streamlit as st
 
+from components.exercise_preview import render_exercise_preview
 from db import DAY_TYPES, delete_latest_log, fetch_df, insert_workout
+from utils.exercise_data import get_exercise_by_name, load_enriched_exercises
 
 st.title("📝 Log Workout")
-st.caption("Fast one-row-per-exercise logging with automatic PR detection.")
+st.caption("Log quickly with enriched exercise previews and metadata.")
 
-exercises = fetch_df("SELECT exercise, day_type, muscle_group FROM exercises ORDER BY exercise")
-exercise_names = exercises["exercise"].tolist()
+enriched_exercises = load_enriched_exercises()
+
+if enriched_exercises:
+    exercise_names = [exercise["name"] for exercise in enriched_exercises]
+else:
+    fallback = fetch_df("SELECT exercise, day_type, muscle_group FROM exercises ORDER BY exercise")
+    exercise_names = fallback["exercise"].tolist()
+
+selected_exercise = st.selectbox("Exercise", exercise_names, index=0)
+selected_record = get_exercise_by_name(enriched_exercises, selected_exercise) if enriched_exercises else None
+
+if selected_record:
+    render_exercise_preview(selected_record, key_prefix="log_workout")
+
+default_day_type = selected_record["day_type"] if selected_record else DAY_TYPES[0]
+default_muscle_group = selected_record["muscle_group"] if selected_record else "Full Body"
 
 with st.form("workout_form", clear_on_submit=True):
     c1, c2 = st.columns(2)
     with c1:
         log_date = st.date_input("Date", value=date.today())
-        day_type = st.selectbox("Day Type", DAY_TYPES, index=0)
+        day_type = st.selectbox("Day Type", DAY_TYPES, index=DAY_TYPES.index(default_day_type) if default_day_type in DAY_TYPES else 0)
     with c2:
-        exercise = st.selectbox("Exercise", exercise_names, index=0)
-        row = exercises[exercises["exercise"] == exercise].iloc[0]
-        muscle_group = st.text_input("Muscle Group", value=row["muscle_group"], disabled=True)
+        muscle_group = st.text_input("Muscle Group", value=default_muscle_group)
 
     c3, c4, c5 = st.columns(3)
     with c3:
@@ -39,8 +53,8 @@ if submitted:
     payload = {
         "date": log_date.strftime("%Y-%m-%d"),
         "day_type": day_type,
-        "exercise": exercise,
-        "muscle_group": row["muscle_group"],
+        "exercise": selected_exercise,
+        "muscle_group": muscle_group,
         "weight": weight,
         "reps": int(reps),
         "sets": int(sets),
@@ -52,7 +66,7 @@ if submitted:
     st.success(f"Saved ✅ Volume: {volume:.0f}")
     if pr:
         st.balloons()
-        st.markdown(f"### 🏅 {pr} achieved on **{exercise}**")
+        st.markdown(f"### 🏅 {pr} achieved on **{selected_exercise}**")
 
 with st.expander("🧘 Rest Timer"):
     seconds = st.slider("Seconds", 30, 240, 90, 15)
