@@ -25,7 +25,11 @@ streamlit run app.py
 ## Project Structure
 - `app.py`
 - `db.py`
-- `utils.py`
+- `utils/__init__.py`
+- `utils/exercise_data.py`
+- `components/exercise_preview.py`
+- `scripts/enrich_exercises_with_youtube.py`
+- `data/exercise_videos.json`
 - `seed_exercises.py`
 - `pages/1_Dashboard.py`
 - `pages/2_Log_Workout.py`
@@ -41,3 +45,31 @@ streamlit run app.py
   - first log of an exercise => `First`
   - higher weight than prior best => `PR`
   - same max weight with higher reps => `PR`
+
+## YouTube Exercise Demo Data
+
+This app uses your custom exercise list (`seed_exercises.py`) as the source of truth and enriches each exercise with:
+- `youtube_url` (direct curated demo link, if available)
+- `youtube_search_url` (fallback YouTube search)
+- beginner-friendly instructions, common mistakes, and tips
+
+### Regenerate exercise video data
+```bash
+python scripts/enrich_exercises_with_youtube.py
+```
+This rewrites `data/exercise_videos.json` from your custom exercise list.
+
+### Add curated direct YouTube links
+1. Open `scripts/enrich_exercises_with_youtube.py`
+2. Add entries in `CURATED_YOUTUBE_URLS`:
+```python
+CURATED_YOUTUBE_URLS = {
+    "Flat Dumbbell Press": "https://www.youtube.com/watch?v=...",
+}
+```
+3. Run the enrichment script again.
+
+### Run the app
+```bash
+streamlit run app.py
+```

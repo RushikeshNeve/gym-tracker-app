@@ -10,7 +10,7 @@ from typing import Any
 
 import pandas as pd
 
-from seed_exercises import EXERCISES
+from seed_exercises import EXERCISE_TUPLES
 
 DB_PATH = Path("gym_tracker.db")
 
@@ -99,7 +99,7 @@ def seed_exercises() -> None:
     with closing(get_conn()) as conn:
         conn.executemany(
             "INSERT OR IGNORE INTO exercises (exercise, day_type, muscle_group) VALUES (?, ?, ?)",
-            EXERCISES,
+            EXERCISE_TUPLES,
         )
         conn.commit()
 
