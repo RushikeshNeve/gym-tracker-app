@@ -4,13 +4,21 @@ from datetime import date
 
 import streamlit as st
 
+from components.exercise_preview import render_exercise_preview
 from db import DAY_TYPES, delete_latest_log, fetch_df, insert_workout
+from utils.exercise_data import get_exercise_by_name, load_exercise_data
 
 st.title("📝 Log Workout")
-st.caption("Fast one-row-per-exercise logging with automatic PR detection.")
+st.caption("Fast one-row-per-exercise logging with built-in form demo videos.")
 
+exercise_library = load_exercise_data()
 exercises = fetch_df("SELECT exercise, day_type, muscle_group FROM exercises ORDER BY exercise")
 exercise_names = exercises["exercise"].tolist()
+
+selected_exercise = st.selectbox("Pick Exercise", exercise_names, index=0)
+selected_meta = get_exercise_by_name(exercise_library, selected_exercise)
+if selected_meta:
+    render_exercise_preview(selected_meta)
 
 with st.form("workout_form", clear_on_submit=True):
     c1, c2 = st.columns(2)
@@ -18,8 +26,8 @@ with st.form("workout_form", clear_on_submit=True):
         log_date = st.date_input("Date", value=date.today())
         day_type = st.selectbox("Day Type", DAY_TYPES, index=0)
     with c2:
-        exercise = st.selectbox("Exercise", exercise_names, index=0)
-        row = exercises[exercises["exercise"] == exercise].iloc[0]
+        exercise = st.text_input("Exercise", value=selected_exercise, disabled=True)
+        row = exercises[exercises["exercise"] == selected_exercise].iloc[0]
         muscle_group = st.text_input("Muscle Group", value=row["muscle_group"], disabled=True)
 
     c3, c4, c5 = st.columns(3)
@@ -39,7 +47,7 @@ if submitted:
     payload = {
         "date": log_date.strftime("%Y-%m-%d"),
         "day_type": day_type,
-        "exercise": exercise,
+        "exercise": selected_exercise,
         "muscle_group": row["muscle_group"],
         "weight": weight,
         "reps": int(reps),
@@ -52,7 +60,7 @@ if submitted:
     st.success(f"Saved ✅ Volume: {volume:.0f}")
     if pr:
         st.balloons()
-        st.markdown(f"### 🏅 {pr} achieved on **{exercise}**")
+        st.markdown(f"### 🏅 {pr} achieved on **{selected_exercise}**")
 
 with st.expander("🧘 Rest Timer"):
     seconds = st.slider("Seconds", 30, 240, 90, 15)

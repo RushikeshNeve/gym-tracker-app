@@ -2,35 +2,33 @@ from __future__ import annotations
 
 import streamlit as st
 
-from db import fetch_df
+from components.exercise_preview import render_exercise_preview
+from utils.exercise_data import load_exercise_data, search_exercises
 
 st.title("🏋️ Exercise Library")
-st.caption("Large built-in exercise database grouped by training day and muscle group.")
+st.caption("Search your custom exercise list with direct YouTube demos + smart fallback links.")
 
-ex = fetch_df("SELECT exercise, day_type, muscle_group FROM exercises ORDER BY muscle_group, exercise")
-
-if ex.empty:
-    st.warning("Exercise library is empty.")
+records = load_exercise_data()
+if not records:
+    st.warning("Exercise library is empty. Run: python scripts/enrich_exercises_with_youtube.py")
     st.stop()
+
+all_day_types = sorted({item["day_type"] for item in records})
+all_muscles = sorted({item["muscle_group"] for item in records})
 
 c1, c2 = st.columns(2)
 with c1:
-    day_filter = st.multiselect("Filter by Day Type", sorted(ex["day_type"].unique()), default=[])
+    day_filter = st.multiselect("Filter by Day Type", all_day_types, default=[])
 with c2:
-    muscle_filter = st.multiselect("Filter by Muscle Group", sorted(ex["muscle_group"].unique()), default=[])
-
-if day_filter:
-    ex = ex[ex["day_type"].isin(day_filter)]
-if muscle_filter:
-    ex = ex[ex["muscle_group"].isin(muscle_filter)]
+    muscle_filter = st.multiselect("Filter by Muscle Group", all_muscles, default=[])
 
 search = st.text_input("Search exercise")
-if search:
-    ex = ex[ex["exercise"].str.contains(search, case=False, na=False)]
+filtered = search_exercises(records, query=search, day_types=day_filter, muscle_groups=muscle_filter)
 
-st.dataframe(ex, use_container_width=True, hide_index=True)
+st.caption(f"Showing {len(filtered)} exercises")
 
-st.markdown("### Grouped View")
-for muscle, group in ex.groupby("muscle_group"):
-    with st.expander(f"{muscle} ({len(group)})"):
-        st.write(", ".join(group["exercise"].tolist()))
+for idx, item in enumerate(filtered):
+    with st.container(border=True):
+        render_exercise_preview(item)
+        if idx < len(filtered) - 1:
+            st.divider()
