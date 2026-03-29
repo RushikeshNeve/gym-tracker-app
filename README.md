@@ -1,18 +1,22 @@
-# Gym Tracker Pro (Streamlit)
+# 75 Hard Gym Tracker Pro
 
-A production-style, mobile-friendly fitness tracking app inspired by a Google Sheet workflow.
+An upgraded Streamlit app that extends the original gym tracker into a full 75 Hard accountability and fat-loss system for workout consistency, hydration, diet adherence, recipes, calorie deficit tracking, progress photos, and weekly review.
 
 ## Features
-- Dashboard with KPI cards, weekly score, trends, PR feed, and recommended workout
-- Fast workout logger (one row per exercise entry) with automatic PR logic
-- Exercise library with large seeded catalog
-- Body metrics logging + transformation trends
-- Cardio logging + weekly adherence and calorie summaries
-- Progress analytics with filters (date/day/muscle/exercise)
-- Fat-loss features: target weight, goal progress, waist/bodyweight trends
-- CSV import utility for exported Google Sheet data
-- CSV export for workout logs
-- SQLite storage with seeded demo data
+- Today-first 75 Hard dashboard with required daily checklist
+- Two-workout + outdoor workout rule tracking
+- Profile-based BMR, TDEE, maintenance calorie, and target calorie calculation
+- Weekly meal-plan templates with multiple daily meal options
+- Recipe library with ingredients, steps, portions, and macro breakdown
+- Calorie, protein, carbs, fats, and fiber tracking
+- Energy balance tracking: food calories, exercise calories, net calories, deficit/surplus
+- Diet compliance logging, whey quick-add, and spicy evening snack quick-adds
+- Hydration tracker with quick-add buttons and weekly adherence
+- Progress-photo metadata plus local file storage
+- Upgraded body metrics with fat-loss focused measurements
+- Weekly review summaries with reflections
+- Preserved workout logger, PR logic, cardio tracker, progress analytics, and exercise library
+- CSV import for legacy workout/body/cardio data plus CSV export for workouts, challenge days, nutrition, and hydration
 
 ## Run locally
 ```bash
@@ -26,50 +30,69 @@ streamlit run app.py
 - `app.py`
 - `db.py`
 - `utils/__init__.py`
-- `utils/exercise_data.py`
-- `components/exercise_preview.py`
-- `scripts/enrich_exercises_with_youtube.py`
-- `data/exercise_videos.json`
-- `seed_exercises.py`
+- `utils/challenge_logic.py`
+- `utils/nutrition_logic.py`
+- `utils/hydration_logic.py`
+- `utils/weekly_review.py`
+- `pages/0_Today.py`
 - `pages/1_Dashboard.py`
 - `pages/2_Log_Workout.py`
 - `pages/3_Body_Metrics.py`
 - `pages/4_Cardio.py`
 - `pages/5_Progress.py`
 - `pages/6_Exercise_Library.py`
+- `pages/7_Nutrition.py`
+- `pages/8_Hydration.py`
+- `pages/9_Progress_Photos.py`
+- `pages/10_Weekly_Review.py`
+
+## Challenge Logic
+- `challenge_start_date` is stored in `app_settings`
+- On first run it defaults to tomorrow relative to the local machine date
+- `challenge_day_number` is derived from that start date
+- A day is `perfect` when all required 75 Hard tasks are complete:
+  - workout 1
+  - workout 2
+  - one workout outdoors
+  - followed diet
+  - no cheat meals
+  - no alcohol
+  - water goal completed
+  - progress picture taken
+- A day is `incomplete` when it is today or in the future and still has missing required tasks
+- A day is `failed` when it is in the past and still has missing required tasks
+- The app does not hard reset the challenge; it marks status clearly and keeps the history
+
+## Progress Photos
+- Uploaded images are stored locally under `uploads/progress_photos/YYYY-MM-DD/`
+- The database stores photo metadata and file paths in `progress_photos`
+- If an image file is later missing, the app still keeps the metadata and warns gracefully
+
+## Demo Data
+The app seeds:
+- existing workout, body metric, and cardio demo data
+- a default challenge start date set to tomorrow
+- sample challenge-day entries
+- sample nutrition, hydration, profile, recipe, and exercise-burn logs
+- sample progress-photo metadata
+
+Seeding only happens when the relevant tables are empty.
 
 ## Notes
-- Database file is `gym_tracker.db` (auto-created)
-- On first run, exercises and sample data are seeded
-- PR logic:
-  - first log of an exercise => `First`
-  - higher weight than prior best => `PR`
-  - same max weight with higher reps => `PR`
+- Database file: `gym_tracker.db`
+- Storage is local SQLite only
+- Charts use Plotly
+- Exercise library and YouTube demo enrichment remain available
 
 ## YouTube Exercise Demo Data
-
-This app uses your custom exercise list (`seed_exercises.py`) as the source of truth and enriches each exercise with:
-- `youtube_url` (direct curated demo link, if available)
-- `youtube_search_url` (fallback YouTube search)
-- beginner-friendly instructions, common mistakes, and tips
+The app uses `seed_exercises.py` as the exercise source of truth and enriches exercises with:
+- `youtube_url`
+- `youtube_search_url`
+- execution instructions
+- common mistakes
+- coaching tips
 
 ### Regenerate exercise video data
 ```bash
 python scripts/enrich_exercises_with_youtube.py
-```
-This rewrites `data/exercise_videos.json` from your custom exercise list.
-
-### Add curated direct YouTube links
-1. Open `scripts/enrich_exercises_with_youtube.py`
-2. Add entries in `CURATED_YOUTUBE_URLS`:
-```python
-CURATED_YOUTUBE_URLS = {
-    "Flat Dumbbell Press": "https://www.youtube.com/watch?v=...",
-}
-```
-3. Run the enrichment script again.
-
-### Run the app
-```bash
-streamlit run app.py
 ```
