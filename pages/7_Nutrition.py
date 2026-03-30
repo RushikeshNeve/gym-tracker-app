@@ -145,74 +145,91 @@ progress_block("Carbs target", daily["totals"]["carbs"], float(daily["targets"][
 progress_block("Fats target", daily["totals"]["fats"], float(daily["targets"]["fats_target"]))
 
 st.markdown("### Today's Planned Meals")
-if meal_plan.empty:
-    st.info("No meal template for this weekday yet.")
-else:
-    selected_options: dict[str, str] = {}
-    for _, row in meal_plan.iterrows():
-        options = [opt for opt in [row["option_1"], row["option_2"], row["option_3"], row["option_4"]] if isinstance(opt, str) and opt.strip()]
-        if not options:
-            continue
-        meal_type = str(row["meal_type"]).replace("_", " ").title()
-        st.markdown(f"#### {meal_type}")
-        picked = st.radio(
-            f"Choose {meal_type}",
-            options,
-            horizontal=True,
-            key=f"plan_{row['meal_type']}",
-            label_visibility="collapsed",
+recipe_library_df = get_recipe_library_df()
+meal_template_lookup = {
+    str(row["meal_type"]): row for _, row in meal_plan.iterrows()
+} if not meal_plan.empty else {}
+meal_sections = ["pre_workout", "breakfast", "lunch", "snack", "dinner"]
+
+for meal_key in meal_sections:
+    meal_type = meal_key.replace("_", " ").title()
+    st.markdown(f"#### {meal_type}")
+    meal_recipes = recipe_library_df.loc[
+        recipe_library_df["meal_type"].astype(str) == meal_key, "recipe_name"
+    ].dropna().astype(str).sort_values().tolist()
+
+    if not meal_recipes:
+        st.info(f"No recipes available for {meal_type}.")
+        continue
+
+    template_row = meal_template_lookup.get(meal_key)
+    default_recipe = template_row["option_1"] if template_row is not None and isinstance(template_row.get("option_1"), str) else meal_recipes[0]
+    default_index = meal_recipes.index(default_recipe) if default_recipe in meal_recipes else 0
+
+    picked = st.selectbox(
+        f"Choose {meal_type}",
+        meal_recipes,
+        index=default_index,
+        key=f"plan_{meal_key}",
+    )
+
+    recipe = get_recipe_by_name(picked)
+    if recipe:
+        with st.container(border=True):
+            col_a, col_b = st.columns([1.2, 0.8])
+            with col_a:
+                st.subheader(recipe["recipe_name"])
+                st.caption(recipe["portion_note"])
+                st.write("Ingredients")
+                for item in recipe["ingredients"]:
+                    st.write(f"- {item['item']}: {item['quantity']}")
+                st.write("Steps")
+                for idx, step in enumerate(recipe["steps"], start=1):
+                    st.write(f"{idx}. {step}")
+            with col_b:
+                metric_card("Calories", f"{recipe['calories']:.0f}", "Per serving")
+                metric_card("Protein", f"{recipe['protein']:.0f} g", "High-protein focus")
+                metric_card("Carbs", f"{recipe['carbs']:.0f} g", "Per serving")
+                metric_card("Fats", f"{recipe['fats']:.0f} g", "Per serving")
+                st.caption("Tags")
+                tags = []
+                if recipe["is_spicy"]:
+                    tags.append("Spicy")
+                if recipe["is_vegetarian"]:
+                    tags.append("Vegetarian")
+                if recipe["is_egg_based"]:
+                    tags.append("Egg based")
+                if recipe["is_soya_based"]:
+                    tags.append("Soya based")
+                st.write(", ".join(tags) if tags else "None")
+        serving_count = st.number_input(
+            f"Serving count for {picked}",
+            min_value=0.5,
+            max_value=5.0,
+            value=1.0,
+            step=0.5,
+            key=f"serving_{meal_key}",
         )
-        selected_options[row["meal_type"]] = picked
-        recipe = get_recipe_by_name(picked)
-        if recipe:
-            with st.container(border=True):
-                col_a, col_b = st.columns([1.2, 0.8])
-                with col_a:
-                    st.subheader(recipe["recipe_name"])
-                    st.caption(recipe["portion_note"])
-                    st.write("Ingredients")
-                    for item in recipe["ingredients"]:
-                        st.write(f"- {item['item']}: {item['quantity']}")
-                    st.write("Steps")
-                    for idx, step in enumerate(recipe["steps"], start=1):
-                        st.write(f"{idx}. {step}")
-                with col_b:
-                    metric_card("Calories", f"{recipe['calories']:.0f}", "Per serving")
-                    metric_card("Protein", f"{recipe['protein']:.0f} g", "High-protein focus")
-                    metric_card("Carbs", f"{recipe['carbs']:.0f} g", "Per serving")
-                    metric_card("Fats", f"{recipe['fats']:.0f} g", "Per serving")
-                    st.caption("Tags")
-                    tags = []
-                    if recipe["is_spicy"]:
-                        tags.append("Spicy")
-                    if recipe["is_vegetarian"]:
-                        tags.append("Vegetarian")
-                    if recipe["is_egg_based"]:
-                        tags.append("Egg based")
-                    if recipe["is_soya_based"]:
-                        tags.append("Soya based")
-                    st.write(", ".join(tags) if tags else "None")
-            serving_count = st.number_input(f"Serving count for {picked}", min_value=0.5, max_value=5.0, value=1.0, step=0.5, key=f"serving_{row['meal_type']}")
-            if st.button(f"Add {picked}", key=f"add_{row['meal_type']}", use_container_width=True):
-                insert_nutrition_log(
-                    {
-                        "date": log_date,
-                        "meal_type": row["meal_type"].replace("_", " ").title(),
-                        "food_name": recipe["recipe_name"],
-                        "quantity": recipe["portion_note"],
-                        "serving_count": serving_count,
-                        "calories": recipe["calories"] * serving_count,
-                        "protein": recipe["protein"] * serving_count,
-                        "carbs": recipe["carbs"] * serving_count,
-                        "fats": recipe["fats"] * serving_count,
-                        "fiber": recipe["fiber"] * serving_count,
-                        "source_type": "recipe",
-                        "recipe_name": recipe["recipe_name"],
-                        "notes": row.get("notes", "") or "",
-                    }
-                )
-                st.success(f"Added {picked}.")
-                st.rerun()
+        if st.button(f"Add {picked}", key=f"add_{meal_key}", use_container_width=True):
+            insert_nutrition_log(
+                {
+                    "date": log_date,
+                    "meal_type": meal_type,
+                    "food_name": recipe["recipe_name"],
+                    "quantity": recipe["portion_note"],
+                    "serving_count": serving_count,
+                    "calories": recipe["calories"] * serving_count,
+                    "protein": recipe["protein"] * serving_count,
+                    "carbs": recipe["carbs"] * serving_count,
+                    "fats": recipe["fats"] * serving_count,
+                    "fiber": recipe["fiber"] * serving_count,
+                    "source_type": "recipe",
+                    "recipe_name": recipe["recipe_name"],
+                    "notes": template_row.get("notes", "") if template_row is not None else "",
+                }
+            )
+            st.success(f"Added {picked}.")
+            st.rerun()
 
 st.markdown("### Quick Add")
 qa1, qa2 = st.columns(2)
