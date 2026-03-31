@@ -1,0 +1,16 @@
+.venv/
+backend/.env
+frontend/.env
+backend/.env.vercel
+backend/.vercel/
+frontend/.vercel/
+backend/media/
+backend/__pycache__/
+frontend/node_modules/
+frontend/dist/
+**/__pycache__/
+*.pyc
+gym-tracker-app/
+prep-app/
+tiny-test.png
+*.log

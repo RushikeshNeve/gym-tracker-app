@@ -1,0 +1,18 @@
+export const queryKeys = {
+  today: (date: string) => ["today", date] as const,
+  dashboard: () => ["dashboard"] as const,
+  workouts: () => ["workouts"] as const,
+  workoutHistory: (exerciseName: string) => ["workouts", "history", exerciseName] as const,
+  nutrition: (date: string) => ["nutrition", date] as const,
+  recipes: () => ["recipes"] as const,
+  mealPlans: (date: string) => ["meal-plans", date] as const,
+  hydrationDaily: (date: string) => ["hydration", "daily", date] as const,
+  hydrationWeekly: (date: string) => ["hydration", "weekly", date] as const,
+  bodyMetrics: () => ["body-metrics"] as const,
+  cardio: () => ["cardio"] as const,
+  progressPhotos: (date?: string) => ["progress-photos", date ?? "all"] as const,
+  weeklyReviewSummary: (weekStart: string) => ["weekly-review", "summary", weekStart] as const,
+  weeklyReviewRecord: (weekStart: string) => ["weekly-review", "record", weekStart] as const,
+  profile: () => ["profile"] as const,
+  exercises: (search?: string, dayType?: string, muscleGroup?: string) => ["exercises", search ?? "", dayType ?? "", muscleGroup ?? ""] as const,
+};

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MONOLITH 75 - Mission Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-dim": "#15a4ff",
+              "primary": "#9cff93",
+              "on-secondary-fixed-variant": "#005487",
+              "secondary-fixed-dim": "#93c9ff",
+              "primary-container": "#00fc40",
+              "on-error": "#450900",
+              "surface-container-high": "#201f1f",
+              "on-error-container": "#ffd2c8",
+              "on-surface": "#ffffff",
+              "secondary-fixed": "#afd5ff",
+              "surface-bright": "#2c2c2c",
+              "error-dim": "#d53d18",
+              "outline-variant": "#484847",
+              "surface-container-low": "#131313",
+              "on-tertiary-fixed-variant": "#614700",
+              "surface": "#0e0e0e",
+              "tertiary-dim": "#eeb200",
+              "error": "#ff7351",
+              "on-primary-fixed-variant": "#006513",
+              "on-surface-variant": "#adaaaa",
+              "primary-fixed-dim": "#00ec3b",
+              "tertiary-container": "#ffbf00",
+              "on-tertiary-container": "#563e00",
+              "on-background": "#ffffff",
+              "surface-dim": "#0e0e0e",
+              "surface-variant": "#262626",
+              "surface-container-lowest": "#000000",
+              "error-container": "#b92902",
+              "surface-tint": "#9cff93",
+              "inverse-on-surface": "#565555",
+              "inverse-surface": "#fcf9f8",
+              "on-primary-fixed": "#00440a",
+              "secondary-container": "#00629d",
+              "tertiary-fixed-dim": "#eeb200",
+              "tertiary": "#ffd16f",
+              "on-primary-container": "#005a10",
+              "background": "#0e0e0e",
+              "on-tertiary-fixed": "#3d2b00",
+              "tertiary-fixed": "#ffbf00",
+              "primary-fixed": "#00fc40",
+              "outline": "#767575",
+              "secondary": "#15a4ff",
+              "on-secondary-container": "#f5f8ff",
+              "surface-container": "#1a1919",
+              "inverse-primary": "#006f16",
+              "on-primary": "#006413",
+              "primary-dim": "#00ec3b",
+              "on-secondary": "#00223b",
+              "surface-container-highest": "#262626",
+              "on-secondary-fixed": "#00375a",
+              "on-tertiary": "#614700"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        body {
+            background-color: #0e0e0e;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0E0E0E]/60 backdrop-blur-md no-border tonal-shift bg-[#131313] flat-no-shadows">
+<div class="flex justify-between items-center px-6 py-4 w-full max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="text-2xl font-black text-[#00FF41] tracking-tighter uppercase font-headline">MONOLITH 75</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-2 px-3 py-1 bg-surface-container-highest rounded-full border border-outline-variant/15">
+<span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="text-sm font-bold font-label uppercase tracking-widest">STREAK: 42</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#00FF41] cursor-pointer hover:scale-110 transition-transform">offline_bolt</span>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+<img alt="User profile showing current 75 Hard progress" class="w-full h-full object-cover" data-alt="Close-up portrait of a determined athlete with sweat on brow, dramatic high-contrast lighting in a dark gym setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgt4slVvpHl4UHIu_rBeSBQxCwp1gG1ky8rCbOF8AgcHIW9pztuN7bAsshm1cBImCvbuVNpde83CeZaAfq80mmEulZ3c6nnfn_JF3rQAg35oIEVnPccYU5GaWc8VElweuLWy5toK06mhXQ6Oaa9M61ufAKJ-RBhAGOE-qu-ItC8vfLVwmhbI7akd9lAVs9Ad9vfOmJy2ExgmEQcYNolciQufeawrlB9Mz0iDJvDCbddCnz4tnh1fBt34dSqjKLm4WoL4h-FGHqjT4"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="flex min-h-screen pt-20">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-screen py-8 h-full w-64 border-r border-[#484847]/15 bg-[#0E0E0E] z-40">
+<div class="px-6 mb-10">
+<h2 class="text-xl font-black text-[#00FF41] font-headline">STRIVE FOR 75</h2>
+<p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase mt-1">Day 42 of 75</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Today is Active -->
+<a class="flex items-center gap-3 text-[#00FF41] bg-[#1A1919] rounded-r-full border-l-4 border-[#00FF41] px-6 py-3 font-semibold text-sm font-headline uppercase tracking-widest transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+<span>Today</span>
+</a>
+<a class="flex items-center gap-3 text-gray-400 hover:text-white px-6 py-3 font-semibold text-sm font-headline uppercase tracking-widest hover:bg-[#1A1919] hover:text-[#00FF41] transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-gray-400 hover:text-white px-6 py-3 font-semibold text-sm font-headline uppercase tracking-widest hover:bg-[#1A1919] hover:text-[#00FF41] transition-all" href="#">
+<span class="material-symbols-outlined">fitness_center</span>
+<span>Log Workout</span>
+</a>
+<a class="flex items-center gap-3 text-gray-400 hover:text-white px-6 py-3 font-semibold text-sm font-headline uppercase tracking-widest hover:bg-[#1A1919] hover:text-[#00FF41] transition-all" href="#">
+<span class="material-symbols-outlined">restaurant</span>
+<span>Nutrition</span>
+</a>
+<a class="flex items-center gap-3 text-gray-400 hover:text-white px-6 py-3 font-semibold text-sm font-headline uppercase tracking-widest hover:bg-[#1A1919] hover:text-[#00FF41] transition-all" href="#">
+<span class="material-symbols-outlined">water_drop</span>
+<span>Hydration</span>
+</a>
+<a class="flex items-center gap-3 text-gray-400 hover:text-white px-6 py-3 font-semibold text-sm font-headline uppercase tracking-widest hover:bg-[#1A1919] hover:text-[#00FF41] transition-all" href="#">
+<span class="material-symbols-outlined">monitor_weight</span>
+<span>Body Metrics</span>
+</a>
+<a class="flex items-center gap-3 text-gray-400 hover:text-white px-6 py-3 font-semibold text-sm font-headline uppercase tracking-widest hover:bg-[#1A1919] hover:text-[#00FF41] transition-all" href="#">
+<span class="material-symbols-outlined">directions_run</span>
+<span>Cardio</span>
+</a>
+<a class="flex items-center gap-3 text-gray-400 hover:text-white px-6 py-3 font-semibold text-sm font-headline uppercase tracking-widest hover:bg-[#1A1919] hover:text-[#00FF41] transition-all" href="#">
+<span class="material-symbols-outlined">show_chart</span>
+<span>Progress</span>
+</a>
+<a class="flex items-center gap-3 text-gray-400 hover:text-white px-6 py-3 font-semibold text-sm font-headline uppercase tracking-widest hover:bg-[#1A1919] hover:text-[#00FF41] transition-all" href="#">
+<span class="material-symbols-outlined">add_a_photo</span>
+<span>Progress Photos</span>
+</a>
+<a class="flex items-center gap-3 text-gray-400 hover:text-white px-6 py-3 font-semibold text-sm font-headline uppercase tracking-widest hover:bg-[#1A1919] hover:text-[#00FF41] transition-all" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span>Exercise Library</span>
+</a>
+<a class="flex items-center gap-3 text-gray-400 hover:text-white px-6 py-3 font-semibold text-sm font-headline uppercase tracking-widest hover:bg-[#1A1919] hover:text-[#00FF41] transition-all" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span>Weekly Review</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full py-4 bg-primary text-on-primary font-bold rounded-lg text-xs tracking-widest uppercase hover:bg-primary-container transition-colors shadow-lg shadow-primary/10">
+                    LOG DAILY PROGRESS
+                </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-64 p-6 lg:p-12">
+<div class="max-w-6xl mx-auto">
+<!-- Hero Section: Progress & Scale -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+<div class="lg:col-span-7 order-2 lg:order-1">
+<span class="text-primary font-label font-bold tracking-[0.3em] uppercase block mb-4">Current Status</span>
+<h1 class="font-headline font-bold text-6xl md:text-8xl tracking-tight mb-6">DAY 42 <span class="text-on-surface-variant/30">/ 75</span></h1>
+<p class="text-on-surface-variant text-xl max-w-md leading-relaxed mb-8">
+                            You are in the deep water. Discipline is the only way through. No excuses, just execution.
+                        </p>
+<div class="flex flex-wrap gap-4">
+<div class="bg-surface-container-low px-6 py-4 rounded-lg border-l-4 border-primary">
+<span class="block text-xs text-on-surface-variant font-bold uppercase tracking-widest mb-1">Perfect Days</span>
+<span class="text-3xl font-headline font-extrabold">42</span>
+</div>
+<div class="bg-surface-container-low px-6 py-4 rounded-lg border-l-4 border-tertiary">
+<span class="block text-xs text-on-surface-variant font-bold uppercase tracking-widest mb-1">Streak Badge</span>
+<span class="text-3xl font-headline font-extrabold">PHASE I</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 flex justify-center order-1 lg:order-2">
+<div class="relative w-64 h-64 md:w-80 md:h-80">
+<!-- Background Progress Circle -->
+<svg class="w-full h-full">
+<circle class="text-surface-container-highest" cx="50%" cy="50%" fill="transparent" r="45%" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary progress-ring-circle" cx="50%" cy="50%" fill="transparent" r="45%" stroke="currentColor" stroke-dasharray="283%" stroke-dashoffset="120%" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="text-5xl md:text-7xl font-headline font-black text-primary">57%</span>
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mt-2">Completed</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Mission Control Checklist -->
+<div class="mb-12">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline text-3xl font-bold">DAILY CHECKLIST</h2>
+<!-- Segmented Control -->
+<div class="flex bg-surface-container p-1 rounded-full">
+<button class="px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest bg-surface-container-highest text-primary transition-all">Pending (4)</button>
+<button class="px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all">Completed (3)</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Checklist Item: Indoor Workout -->
+<div class="bg-surface-container p-6 rounded-lg border border-outline-variant/5 hover:border-primary/20 transition-all group cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">fitness_center</span>
+</div>
+<div class="w-6 h-6 rounded-md border-2 border-outline-variant flex items-center justify-center"></div>
+</div>
+<h3 class="font-headline text-lg font-bold mb-1">Workout 1 (Indoor)</h3>
+<p class="text-sm text-on-surface-variant">45 minutes of intensive training inside.</p>
+</div>
+<!-- Checklist Item: Outdoor Workout -->
+<div class="bg-surface-container p-6 rounded-lg border border-outline-variant/5 hover:border-primary/20 transition-all group cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">directions_run</span>
+</div>
+<div class="w-6 h-6 rounded-md border-2 border-outline-variant flex items-center justify-center"></div>
+</div>
+<h3 class="font-headline text-lg font-bold mb-1">Workout 2 (Outdoor)</h3>
+<p class="text-sm text-on-surface-variant">45 minutes outside, regardless of weather.</p>
+</div>
+<!-- Checklist Item: Diet (Completed) -->
+<div class="bg-surface-container/50 p-6 rounded-lg border border-primary/20 transition-all opacity-80">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+</div>
+<div class="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-xs font-bold">check</span>
+</div>
+</div>
+<h3 class="font-headline text-lg font-bold mb-1 line-through text-on-surface-variant">Followed Diet</h3>
+<p class="text-sm text-on-surface-variant/60">Strict adherence to your chosen meal plan.</p>
+</div>
+<!-- Checklist Item: No Cheat / No Alcohol (Completed) -->
+<div class="bg-surface-container/50 p-6 rounded-lg border border-primary/20 transition-all opacity-80">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">block</span>
+</div>
+<div class="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-xs font-bold">check</span>
+</div>
+</div>
+<h3 class="font-headline text-lg font-bold mb-1 line-through text-on-surface-variant">Zero Alcohol / Cheats</h3>
+<p class="text-sm text-on-surface-variant/60">Not a single drop or crumb off-plan.</p>
+</div>
+<!-- Checklist Item: Water -->
+<div class="bg-surface-container p-6 rounded-lg border border-outline-variant/5 hover:border-primary/20 transition-all group cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">water_drop</span>
+</div>
+<div class="flex flex-col items-end gap-1">
+<div class="w-6 h-6 rounded-md border-2 border-outline-variant"></div>
+<span class="text-[10px] font-bold text-secondary">0.75 / 1 GAL</span>
+</div>
+</div>
+<h3 class="font-headline text-lg font-bold mb-1">1 Gallon Water</h3>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-secondary h-full w-3/4"></div>
+</div>
+</div>
+<!-- Checklist Item: Photo -->
+<div class="bg-surface-container p-6 rounded-lg border border-outline-variant/5 hover:border-primary/20 transition-all group cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_a_photo</span>
+</div>
+<div class="w-6 h-6 rounded-md border-2 border-outline-variant flex items-center justify-center"></div>
+</div>
+<h3 class="font-headline text-lg font-bold mb-1">Progress Photo</h3>
+<p class="text-sm text-on-surface-variant">Daily visual accountability capture.</p>
+</div>
+<!-- Checklist Item: Reading (Completed) -->
+<div class="bg-surface-container/50 p-6 rounded-lg border border-primary/20 transition-all opacity-80">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+</div>
+<div class="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-xs font-bold">check</span>
+</div>
+</div>
+<h3 class="font-headline text-lg font-bold mb-1 line-through text-on-surface-variant">10 Pages Reading</h3>
+<p class="text-sm text-on-surface-variant/60">Non-fiction, educational only.</p>
+</div>
+</div>
+</div>
+<!-- Footer Grid: Notes & Stats -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20">
+<div class="lg:col-span-2 bg-surface-container p-8 rounded-lg border border-outline-variant/10">
+<div class="flex items-center gap-2 mb-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">edit_note</span>
+<h3 class="text-xs font-bold uppercase tracking-widest">Daily Focus Note</h3>
+</div>
+<textarea class="w-full bg-surface-container-low border-none rounded-lg p-4 text-on-surface focus:ring-1 focus:ring-primary min-h-[120px] placeholder:text-on-surface-variant/30" placeholder="Record your mindset today..."></textarea>
+<div class="mt-4 flex justify-end">
+<button class="text-xs font-bold uppercase tracking-widest text-primary hover:text-primary-container">Save Note</button>
+</div>
+</div>
+<div class="bg-surface-container p-8 rounded-lg border border-outline-variant/10 flex flex-col justify-between">
+<div>
+<h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-6">Execution Streak</h3>
+<div class="flex gap-2 mb-8 overflow-hidden">
+<!-- Mock streak dots -->
+<div class="w-4 h-4 rounded-full bg-primary shadow-[0_0_10px_rgba(156,255,147,0.3)]"></div>
+<div class="w-4 h-4 rounded-full bg-primary"></div>
+<div class="w-4 h-4 rounded-full bg-primary"></div>
+<div class="w-4 h-4 rounded-full bg-primary"></div>
+<div class="w-4 h-4 rounded-full bg-primary"></div>
+<div class="w-4 h-4 rounded-full bg-primary"></div>
+<div class="w-4 h-4 rounded-full bg-primary"></div>
+<div class="w-4 h-4 rounded-full bg-primary"></div>
+<div class="w-4 h-4 rounded-full bg-tertiary"></div>
+<div class="w-4 h-4 rounded-full bg-surface-container-highest"></div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<span class="text-sm font-medium text-on-surface-variant">Completion rate</span>
+<span class="text-2xl font-headline font-bold">98.4%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-low rounded-full">
+<div class="bg-primary h-full w-[98.4%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile Bottom Navigation Shell -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full bg-[#0E0E0E]/80 backdrop-blur-xl border-t border-outline-variant/10 px-4 py-3 flex justify-around items-center z-50">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Today</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Dash</span>
+</a>
+<div class="relative -top-6">
+<button class="w-14 h-14 bg-primary text-on-primary rounded-full shadow-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl font-bold">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">show_chart</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Stats</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Profile</span>
+</a>
+</nav>
+</body></html>

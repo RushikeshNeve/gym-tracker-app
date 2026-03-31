@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nutrition | MONOLITH 75</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-dim": "#15a4ff",
+              "primary": "#9cff93",
+              "on-secondary-fixed-variant": "#005487",
+              "secondary-fixed-dim": "#93c9ff",
+              "primary-container": "#00fc40",
+              "on-error": "#450900",
+              "surface-container-high": "#201f1f",
+              "on-error-container": "#ffd2c8",
+              "on-surface": "#ffffff",
+              "secondary-fixed": "#afd5ff",
+              "surface-bright": "#2c2c2c",
+              "error-dim": "#d53d18",
+              "outline-variant": "#484847",
+              "surface-container-low": "#131313",
+              "on-tertiary-fixed-variant": "#614700",
+              "surface": "#0e0e0e",
+              "tertiary-dim": "#eeb200",
+              "error": "#ff7351",
+              "on-primary-fixed-variant": "#006513",
+              "on-surface-variant": "#adaaaa",
+              "primary-fixed-dim": "#00ec3b",
+              "tertiary-container": "#ffbf00",
+              "on-tertiary-container": "#563e00",
+              "on-background": "#ffffff",
+              "surface-dim": "#0e0e0e",
+              "surface-variant": "#262626",
+              "surface-container-lowest": "#000000",
+              "error-container": "#b92902",
+              "surface-tint": "#9cff93",
+              "inverse-on-surface": "#565555",
+              "inverse-surface": "#fcf9f8",
+              "on-primary-fixed": "#00440a",
+              "secondary-container": "#00629d",
+              "tertiary-fixed-dim": "#eeb200",
+              "tertiary": "#ffd16f",
+              "on-primary-container": "#005a10",
+              "background": "#0e0e0e",
+              "on-tertiary-fixed": "#3d2b00",
+              "tertiary-fixed": "#ffbf00",
+              "primary-fixed": "#00fc40",
+              "outline": "#767575",
+              "secondary": "#15a4ff",
+              "on-secondary-container": "#f5f8ff",
+              "surface-container": "#1a1919",
+              "inverse-primary": "#006f16",
+              "on-primary": "#006413",
+              "primary-dim": "#00ec3b",
+              "on-secondary": "#00223b",
+              "surface-container-highest": "#262626",
+              "on-secondary-fixed": "#00375a",
+              "on-tertiary": "#614700"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0E0E0E]/60 backdrop-blur-md">
+<div class="flex justify-between items-center px-6 py-4 w-full max-w-screen-2xl mx-auto">
+<div class="text-2xl font-black text-[#00FF41] tracking-tighter uppercase font-headline">MONOLITH 75</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8">
+<button class="text-[#00FF41] font-extrabold font-headline text-sm tracking-widest uppercase transition-colors duration-300">Nutrition</button>
+<button class="text-gray-500 font-medium font-headline text-sm tracking-widest uppercase hover:text-[#00FF41] transition-colors duration-300">Dashboard</button>
+<button class="text-gray-500 font-medium font-headline text-sm tracking-widest uppercase hover:text-[#00FF41] transition-colors duration-300">Workouts</button>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">local_fire_department</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">offline_bolt</span>
+<div class="w-10 h-10 rounded-full border-2 border-primary overflow-hidden">
+<img alt="User profile showing current 75 Hard progress" class="w-full h-full object-cover" data-alt="Close-up portrait of a determined female athlete with subtle sweat on brow, dramatic high-contrast lighting on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6FbKiZKhXqqZf3XyB0Axt6B8KpyMuovcwmXhHPlP8wc-alTyThe1pUwaJ-6RP5H-Qro2tmAF8HH93bwRpFJk4YlsAyt-pnTWu-5jzQ746PZQdbs5YE7wF7NDTE94uzFMQ-T-0yJ4P4hvlzmGI-IAPbxz_mnuBMP08yEja9_vnjQt4_Py34PJLJaNaY5r1KAR0Dm2N7p1XM2Y0wOh-CNgEla6d-3StYzyQS9GW4qM_YDJRsQ_wpTQFnrQkDa4s3YkhyMCOi2KCqGA"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="flex min-h-screen pt-20">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-screen py-8 w-64 bg-[#0E0E0E] border-r border-[#484847]/15 z-40">
+<div class="px-6 mb-10">
+<div class="text-xl font-black text-[#00FF41] font-headline mb-1">STRIVE FOR 75</div>
+<div class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">Day 42 of 75</div>
+</div>
+<nav class="flex-1 overflow-y-auto no-scrollbar space-y-1">
+<a class="flex items-center gap-4 text-gray-400 hover:text-white px-6 py-3 hover:bg-[#1A1919] transition-all font-semibold text-sm Manrope uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">calendar_today</span> Today
+                </a>
+<a class="flex items-center gap-4 text-gray-400 hover:text-white px-6 py-3 hover:bg-[#1A1919] transition-all font-semibold text-sm Manrope uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+                </a>
+<a class="flex items-center gap-4 text-gray-400 hover:text-white px-6 py-3 hover:bg-[#1A1919] transition-all font-semibold text-sm Manrope uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">fitness_center</span> Log Workout
+                </a>
+<a class="flex items-center gap-4 text-[#00FF41] bg-[#1A1919] rounded-r-full border-l-4 border-[#00FF41] px-6 py-3 font-semibold text-sm Manrope uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">restaurant</span> Nutrition
+                </a>
+<a class="flex items-center gap-4 text-gray-400 hover:text-white px-6 py-3 hover:bg-[#1A1919] transition-all font-semibold text-sm Manrope uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">water_drop</span> Hydration
+                </a>
+<a class="flex items-center gap-4 text-gray-400 hover:text-white px-6 py-3 hover:bg-[#1A1919] transition-all font-semibold text-sm Manrope uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">monitor_weight</span> Body Metrics
+                </a>
+<a class="flex items-center gap-4 text-gray-400 hover:text-white px-6 py-3 hover:bg-[#1A1919] transition-all font-semibold text-sm Manrope uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">directions_run</span> Cardio
+                </a>
+<a class="flex items-center gap-4 text-gray-400 hover:text-white px-6 py-3 hover:bg-[#1A1919] transition-all font-semibold text-sm Manrope uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">show_chart</span> Progress
+                </a>
+<a class="flex items-center gap-4 text-gray-400 hover:text-white px-6 py-3 hover:bg-[#1A1919] transition-all font-semibold text-sm Manrope uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">add_a_photo</span> Progress Photos
+                </a>
+<a class="flex items-center gap-4 text-gray-400 hover:text-white px-6 py-3 hover:bg-[#1A1919] transition-all font-semibold text-sm Manrope uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">menu_book</span> Exercise Library
+                </a>
+<a class="flex items-center gap-4 text-gray-400 hover:text-white px-6 py-3 hover:bg-[#1A1919] transition-all font-semibold text-sm Manrope uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">assignment</span> Weekly Review
+                </a>
+</nav>
+<div class="px-6 mt-6">
+<button class="w-full bg-primary text-on-primary font-bold py-4 rounded-lg text-xs tracking-widest uppercase hover:opacity-90 transition-opacity">
+                    LOG DAILY PROGRESS
+                </button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 lg:ml-64 px-6 md:px-12 py-8 max-w-7xl">
+<!-- Macros Header Bento -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+<div class="md:col-span-4 flex items-end justify-between mb-4">
+<div>
+<h1 class="text-4xl font-extrabold font-headline tracking-tight text-on-surface uppercase mb-1">Fuel Control</h1>
+<p class="text-on-surface-variant font-medium">Precision nutrition for day 42. No cheats. No alcohol.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container hover:bg-surface-container-highest text-primary text-xs font-bold px-4 py-2 rounded-full transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> Add Protein Shake
+                        </button>
+<button class="bg-surface-container hover:bg-surface-container-highest text-primary text-xs font-bold px-4 py-2 rounded-full transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> Add Evening Snack
+                        </button>
+</div>
+</div>
+<!-- Calorie Card -->
+<div class="md:col-span-2 bg-surface-container-low rounded-xl p-8 flex items-center justify-between">
+<div>
+<span class="text-on-surface-variant text-xs font-bold tracking-[0.2em] uppercase block mb-2">Total Energy</span>
+<div class="flex items-baseline gap-2">
+<span class="text-5xl font-extrabold font-headline text-on-surface">1,420</span>
+<span class="text-on-surface-variant text-lg">/ 2,400 kcal</span>
+</div>
+<div class="mt-6 w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 59%"></div>
+</div>
+</div>
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-highest" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-dasharray="351.8" stroke-dashoffset="144" stroke-width="8"></circle>
+</svg>
+<span class="absolute text-xl font-bold font-headline">59%</span>
+</div>
+</div>
+<!-- Macro Rings -->
+<div class="md:col-span-2 grid grid-cols-3 gap-4">
+<!-- Protein -->
+<div class="bg-surface-container-low rounded-xl p-6 flex flex-col items-center justify-center text-center">
+<div class="relative w-16 h-16 mb-4">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-highest" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary-container" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="175.9" stroke-dashoffset="52" stroke-width="4"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center text-xs font-bold">70%</span>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase mb-1">Protein</span>
+<span class="text-sm font-bold text-on-surface">126g / 180g</span>
+</div>
+<!-- Carbs -->
+<div class="bg-surface-container-low rounded-xl p-6 flex flex-col items-center justify-center text-center">
+<div class="relative w-16 h-16 mb-4">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-highest" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-secondary" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="175.9" stroke-dashoffset="88" stroke-width="4"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center text-xs font-bold">50%</span>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase mb-1">Carbs</span>
+<span class="text-sm font-bold text-on-surface">110g / 220g</span>
+</div>
+<!-- Fats -->
+<div class="bg-surface-container-low rounded-xl p-6 flex flex-col items-center justify-center text-center">
+<div class="relative w-16 h-16 mb-4">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-highest" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-tertiary" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="175.9" stroke-dashoffset="123" stroke-width="4"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center text-xs font-bold">30%</span>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase mb-1">Fats</span>
+<span class="text-sm font-bold text-on-surface">24g / 80g</span>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Meal Timeline -->
+<div class="lg:col-span-7 space-y-6">
+<h2 class="text-xl font-bold font-headline uppercase tracking-widest flex items-center gap-3 mb-8">
+<span class="w-2 h-8 bg-primary block"></span>
+                        Meal Timeline
+                    </h2>
+<!-- Pre-Workout -->
+<div class="relative group">
+<div class="absolute left-[-25px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary-container z-10 border-4 border-surface"></div>
+<div class="bg-surface-container-low rounded-lg p-6 flex items-center justify-between border-l-4 border-primary-container group-hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-xl overflow-hidden bg-surface-container-highest flex-shrink-0">
+<img alt="Protein Shake" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Protein shake in a shaker bottle with oats and a banana on a dark rustic table with moody lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrRWQz0GMC7LukKpAKeOVJ5347ulnPzJn0lq8kvZ5XP4RSjP1j5d7_VxjF1Lc1SdWhdUwx8wSDJ1lYQ2nqudgCNT7hPT1Y2vRMPmeOWTl5-D3eJArfJiMm4VRWGKbJ28ybjGbRTB8Q74Xz8deXwb4FXdtEke0NPt7O8x95H-Is7IJhKhPlF0-2QKGiXPKvdJIzawMsKFebK8zBKhEtq2ZIgrTnchigZp8p5rLqmvw5Dckb_KEbLezU3Y251RelLnXcsWAxV0pgc2Q"/>
+</div>
+<div>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest block mb-1">Pre-Workout • 06:00 AM</span>
+<h3 class="text-lg font-bold">Protein Shake + Rice Cake</h3>
+<p class="text-xs text-on-surface-variant mt-1">Logged • 240 kcal</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Breakfast -->
+<div class="relative group">
+<div class="absolute left-[-25px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary-container z-10 border-4 border-surface"></div>
+<div class="bg-surface-container-low rounded-lg p-6 flex items-center justify-between border-l-4 border-primary-container group-hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-xl overflow-hidden bg-surface-container-highest flex-shrink-0">
+<img alt="Egg White Scramble" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Fluffy egg white scramble with fresh spinach and avocado on a minimalist black ceramic plate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnDJZkkJQo62gBc0hl85-aeYdA_d3wbMrVQZUo_hmtUg3OwPvWHGIJINNm5mRJE5XB20-LECxIAjvkbqTjb3TKOBy_XW2i2wTIM-nHuhSNMEGKh34Jm4EkVpwVvTiw41Hl-Tadd2f7CA4rJ29zeQzp7JYtxX7stcTRHpW-Lypzdv50Mgi9jn9cdQW3eAl_veJ_xrAqRq-1lB1bduy98550yG9fSXz-2aNIHuHQkHnpeoars0OGTqZvdIf78Aw8Eeatv_SfEKh9qoo"/>
+</div>
+<div>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest block mb-1">Breakfast • 09:30 AM</span>
+<h3 class="text-lg font-bold">Egg White Scramble</h3>
+<p class="text-xs text-on-surface-variant mt-1">Logged • 320 kcal</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Lunch (Active/Planned) -->
+<div class="relative group">
+<div class="absolute left-[-25px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-tertiary z-10 border-4 border-surface"></div>
+<div class="bg-surface-container border-2 border-primary/30 rounded-lg p-6 flex items-center justify-between group-hover:border-primary transition-colors">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-xl overflow-hidden bg-surface-container-highest flex-shrink-0">
+<img alt="Chicken &amp; Sweet Potato" class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Grilled chicken breast slices with roasted sweet potato cubes and steamed broccoli on a dark slate background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgtPWolVOM4FZd46mkB-57O-jYZfKJRSuoY7HHaVtI5pCk7aq0gMMVNutwFaAcepqomjcJHrkxcx7d4UzAEVa9k9xD0UhWSsyO29A5Tjt2CS6JFIoAIY5wKSaDhwkozGgqAsU4Kj02Emxbw5uR9915HU3d-Rsl-5AaQahU7C8T7kvYZjnHGCXcaF6O5cqrDBAj3Ra5GqetU07lKfY7V3Rc_8XUQZIOV3KC4QMPAR-VKfM56gFEzpQd5SNzpE-4uH8BscAOBU5QAig"/>
+</div>
+<div>
+<span class="text-[10px] font-bold text-tertiary uppercase tracking-widest block mb-1">Lunch • 13:00 PM</span>
+<h3 class="text-lg font-bold">Chicken &amp; Sweet Potato</h3>
+<p class="text-xs text-on-surface-variant mt-1">Planned • 450 kcal</p>
+</div>
+</div>
+<button class="bg-primary text-on-primary text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-tighter">Log Now</button>
+</div>
+</div>
+<!-- Snack -->
+<div class="relative group">
+<div class="absolute left-[-25px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-surface-container-highest z-10 border-4 border-surface"></div>
+<div class="bg-surface-container-low rounded-lg p-6 flex items-center justify-between group-hover:bg-surface-container transition-colors opacity-70">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-xl overflow-hidden bg-surface-container-highest flex-shrink-0">
+<img alt="Greek Yogurt" class="w-full h-full object-cover grayscale" data-alt="Plain greek yogurt bowl topped with a few blueberries and a sprinkle of cinnamon on a dark surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5xx9DqQ-tlQjdli0Zpk9Fux6aToJzx9GXxmn8tQsDrgvPEfdZ1FBZj90qZOQzGcQBbifNr_qBs-K9071uYwbGcGTKuF1_DG5rwS5jDVyqVNaXogLu3hcDKPt4N_OZmfg4LQ0olzy81Z57CAl9IDbgmyNuAs85s0X2FsGhPNZvfyXeJdmUp-FdKRDK4KRDkD4QES9ux69aeS1CKQPaMssq0Nx3yScPiD4dyOUQO-3p3yqfhKwLrjI-Vu-0jovVp8dZL5od7KLnOm8"/>
+</div>
+<div>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest block mb-1">Snack • 16:30 PM</span>
+<h3 class="text-lg font-bold">Greek Yogurt</h3>
+<p class="text-xs text-on-surface-variant mt-1">Planned • 180 kcal</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">schedule</span>
+</div>
+</div>
+<!-- Dinner -->
+<div class="relative group">
+<div class="absolute left-[-25px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-surface-container-highest z-10 border-4 border-surface"></div>
+<div class="bg-surface-container-low rounded-lg p-6 flex items-center justify-between group-hover:bg-surface-container transition-colors opacity-70">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-xl overflow-hidden bg-surface-container-highest flex-shrink-0">
+<img alt="Lean Beef" class="w-full h-full object-cover grayscale" data-alt="Lean grilled beef strips with sautéed bell peppers and onions in a cast iron skillet with dramatic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB84yhZ7VpMzygouvhV7tljYt8g-C_poS45Nf7lHt7EimAPiz8aQf2LqyFVkY6XCMxzJ7am-sBirNBTPNeGsZRVqgp5l3jnP33t2924YhZ4Kv1K_LzOg-8OldS9Hbrvtbvgy4sIHLKgBuYt0hRSmbr1kAOj9KdrqmOKDNSPXpLG98SbLr95c6nnUlPUTkPkyD86p82gytuLnBDLUsgwqWJIt-5EXfXnsai65s-yKvLfBa_Jz6iv5UtKTxK0gGOnGH4ZZmgUOVt_jZU"/>
+</div>
+<div>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest block mb-1">Dinner • 19:30 PM</span>
+<h3 class="text-lg font-bold">Lean Beef &amp; Veggies</h3>
+<p class="text-xs text-on-surface-variant mt-1">Planned • 510 kcal</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">schedule</span>
+</div>
+</div>
+</div>
+<!-- Recipe Detail Sidebar -->
+<div class="lg:col-span-5">
+<div class="sticky top-24 space-y-6">
+<div class="bg-surface-container rounded-xl overflow-hidden border border-outline-variant/15">
+<div class="h-56 w-full relative">
+<img alt="Chicken &amp; Sweet Potato Detail" class="w-full h-full object-cover" data-alt="Close up of perfectly seasoned grilled chicken and orange sweet potato wedges with a sprinkle of fresh parsley" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBShO7FmfXtejyHswmxTjdDiferl6P-b4YtZRLujEcyqdh54qXk4kt0IZnwGDklp9hJgH2NLJroicIZJywkHL7h00uQlVyttAjw2PsllJfU1wIS96CxoTG_yHM3hlGWnXvyWBnsI4w4bXeTppcKrOYC0LtmCM8RTWtBSp9WW5oArR5nCTEFqiPrsDIyhXSZaXfELvIceVPUQK2aoLPqury4gIZUwK8Lekv5UjZdgwHK_MZQrvcxnqPhc_vn7RkgxpI7iDLdSRJYQjI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<h2 class="text-2xl font-black font-headline uppercase tracking-tight mb-1">Chicken &amp; Sweet Potato</h2>
+<div class="flex gap-4">
+<span class="bg-primary-container/20 text-primary-container text-[10px] font-bold px-2 py-1 rounded uppercase tracking-widest">High Protein</span>
+<span class="bg-secondary/20 text-secondary text-[10px] font-bold px-2 py-1 rounded uppercase tracking-widest">Complex Carbs</span>
+</div>
+</div>
+</div>
+<div class="p-8">
+<!-- Macros Small -->
+<div class="grid grid-cols-4 gap-4 mb-8 py-4 border-y border-outline-variant/10">
+<div class="text-center">
+<p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest mb-1">Cals</p>
+<p class="text-lg font-bold">450</p>
+</div>
+<div class="text-center">
+<p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest mb-1">Prot</p>
+<p class="text-lg font-bold">45g</p>
+</div>
+<div class="text-center">
+<p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest mb-1">Carb</p>
+<p class="text-lg font-bold">40g</p>
+</div>
+<div class="text-center">
+<p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest mb-1">Fat</p>
+<p class="text-lg font-bold">8g</p>
+</div>
+</div>
+<!-- Ingredients -->
+<div class="mb-8">
+<h3 class="text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">list</span> Ingredients
+                                    </h3>
+<ul class="space-y-3">
+<li class="flex justify-between items-center text-sm">
+<span class="text-on-surface">Chicken Breast</span>
+<span class="text-on-surface-variant font-medium">200g</span>
+</li>
+<li class="flex justify-between items-center text-sm">
+<span class="text-on-surface">Sweet Potato</span>
+<span class="text-on-surface-variant font-medium">150g</span>
+</li>
+<li class="flex justify-between items-center text-sm">
+<span class="text-on-surface">Steamed Broccoli</span>
+<span class="text-on-surface-variant font-medium">1 cup</span>
+</li>
+<li class="flex justify-between items-center text-sm">
+<span class="text-on-surface">Olive Oil</span>
+<span class="text-on-surface-variant font-medium">1 tsp</span>
+</li>
+</ul>
+</div>
+<!-- Steps -->
+<div>
+<h3 class="text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">cooking</span> Preparation
+                                    </h3>
+<div class="space-y-4">
+<div class="flex gap-4">
+<span class="w-6 h-6 rounded-full bg-surface-container-highest text-[10px] font-bold flex items-center justify-center flex-shrink-0 text-primary">1</span>
+<p class="text-xs text-on-surface-variant leading-relaxed">Season chicken with sea salt and black pepper. Grill until internal temperature reaches 165°F.</p>
+</div>
+<div class="flex gap-4">
+<span class="w-6 h-6 rounded-full bg-surface-container-highest text-[10px] font-bold flex items-center justify-center flex-shrink-0 text-primary">2</span>
+<p class="text-xs text-on-surface-variant leading-relaxed">Peel and cube sweet potatoes. Roast at 400°F with olive oil for 25 minutes until tender.</p>
+</div>
+<div class="flex gap-4">
+<span class="w-6 h-6 rounded-full bg-surface-container-highest text-[10px] font-bold flex items-center justify-center flex-shrink-0 text-primary">3</span>
+<p class="text-xs text-on-surface-variant leading-relaxed">Steam broccoli for 4 minutes. Combine all ingredients into your meal prep container.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Tip Box -->
+<div class="bg-surface-container-low border-l-4 border-tertiary p-6 rounded-lg">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-tertiary">lightbulb</span>
+<div>
+<p class="text-xs font-bold uppercase tracking-wider text-tertiary mb-1">Discipline Tip</p>
+<p class="text-xs text-on-surface-variant leading-relaxed italic">"You are one meal away from a better version of yourself. The plan works if you do."</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

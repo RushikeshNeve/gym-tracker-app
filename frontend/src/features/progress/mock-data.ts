@@ -1,0 +1,85 @@
+import type { ProgressPageData } from "@/types/tracker-pages";
+
+export const progressPageMock: ProgressPageData = {
+  trends: [
+    {
+      title: "Workout volume",
+      description: "Total weekly lifting volume.",
+      unit: "kg",
+      accent: "primary",
+      summary: "Volume is stable despite the calorie deficit.",
+      points: [
+        { label: "W1", value: 18400 },
+        { label: "W2", value: 19100 },
+        { label: "W3", value: 18850 },
+        { label: "W4", value: 19600 },
+        { label: "W5", value: 20150 },
+        { label: "W6", value: 19900 },
+        { label: "W7", value: 20420 },
+      ],
+    },
+    {
+      title: "Calorie deficit",
+      description: "Average daily deficit trend.",
+      unit: "kcal",
+      accent: "warning",
+      summary: "Deficit remains meaningful without getting reckless.",
+      points: [
+        { label: "W1", value: 420 },
+        { label: "W2", value: 510 },
+        { label: "W3", value: 480 },
+        { label: "W4", value: 540 },
+        { label: "W5", value: 505 },
+        { label: "W6", value: 560 },
+        { label: "W7", value: 530 },
+      ],
+    },
+    {
+      title: "Protein adherence",
+      description: "Percentage of days hitting the protein floor.",
+      unit: "%",
+      accent: "secondary",
+      summary: "Protein adherence is becoming one of the strongest habits in the system.",
+      points: [
+        { label: "W1", value: 71 },
+        { label: "W2", value: 86 },
+        { label: "W3", value: 86 },
+        { label: "W4", value: 71 },
+        { label: "W5", value: 100 },
+        { label: "W6", value: 86 },
+        { label: "W7", value: 86 },
+      ],
+    },
+    {
+      title: "Compliance trend",
+      description: "Weekly challenge execution score.",
+      unit: "%",
+      accent: "primary",
+      summary: "The trend line says the system is working, even with a few imperfect days.",
+      points: [
+        { label: "W1", value: 74 },
+        { label: "W2", value: 82 },
+        { label: "W3", value: 88 },
+        { label: "W4", value: 79 },
+        { label: "W5", value: 91 },
+        { label: "W6", value: 87 },
+        { label: "W7", value: 88 },
+      ],
+    },
+  ],
+  strongestLifts: [
+    { exercise: "Romanian Deadlift", value: "95 kg x 8", note: "Highest hinge performance in the cut." },
+    { exercise: "Incline Dumbbell Press", value: "32.5 kg x 9", note: "Still moving upward while calories stay controlled." },
+    { exercise: "Lat Pulldown", value: "75 kg x 10", note: "Back strength holding cleanly." },
+  ],
+  prHistory: [
+    { id: "1", title: "Incline Dumbbell Press", value: "32.5 kg x 9", when: "2 days ago" },
+    { id: "2", title: "Lat Pulldown", value: "75 kg x 10", when: "4 days ago" },
+    { id: "3", title: "Romanian Deadlift", value: "95 kg x 8", when: "6 days ago" },
+  ],
+  transformationAnalytics: [
+    { label: "Weight change", value: "-4.6 kg", note: "Since day 1 of the challenge." },
+    { label: "Waist change", value: "-3.5 cm", note: "Strongest visual signal so far." },
+    { label: "Perfect days", value: "28", note: "The habit foundation is already meaningful." },
+  ],
+};
