@@ -2,8 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/lib/api/services";
 import { formatWeekday, getTodayDateString } from "@/lib/date";
-import type { NutritionLogCreateRequest, Recipe } from "@/types/api";
-import type { NutritionPageData } from "@/types/nutrition";
+import type { NutritionLogCreateRequest, NutritionMealAnalysisRequest, Recipe } from "@/types/api";
+import type { NutritionAnalysisCard, NutritionPageData } from "@/types/nutrition";
 
 function recipeTags(recipe: Recipe) {
   return [
@@ -199,6 +199,29 @@ export function useQuickAddNutritionLog() {
       void queryClient.invalidateQueries({ queryKey: ["nutrition-page", todayDate] });
       void queryClient.invalidateQueries({ queryKey: ["today", todayDate] });
       void queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    },
+  });
+}
+
+export function useAnalyzeNutritionMeal() {
+  return useMutation<NutritionAnalysisCard, Error, NutritionMealAnalysisRequest>({
+    mutationFn: async (payload) => {
+      const result = await api.nutrition.analyze(payload);
+      return {
+        mealType: result.meal_type,
+        title: result.food_name,
+        quantity: result.quantity,
+        macros: {
+          calories: result.calories,
+          protein: result.protein,
+          carbs: result.carbs,
+          fats: result.fats,
+          fiber: result.fiber,
+        },
+        notes: result.notes,
+        assumptions: result.assumptions,
+        sourceType: result.source_type,
+      };
     },
   });
 }

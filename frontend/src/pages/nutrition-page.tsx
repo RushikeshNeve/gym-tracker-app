@@ -5,7 +5,6 @@ import { EnergyBalanceCard } from "@/components/design/energy-balance-card";
 import { ErrorState } from "@/components/design/error-state";
 import { LoadingShell } from "@/components/design/loading-shell";
 import { MacroProgressGroup } from "@/components/design/macro-progress-group";
-import { MealOptionCard } from "@/components/design/meal-option-card";
 import { MealTimelineRow } from "@/components/design/meal-timeline-row";
 import { QuickAddNutritionItem } from "@/components/design/quick-add-nutrition-item";
 import { RecipeCard } from "@/components/design/recipe-card";
@@ -13,16 +12,22 @@ import { SectionCard } from "@/components/design/section-card";
 import { StatusChip } from "@/components/design/status-chip";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
-import { useNutritionPage, useQuickAddNutritionLog } from "@/hooks/use-nutrition-page";
+import { Textarea } from "@/components/ui/textarea";
+import { useAnalyzeNutritionMeal, useNutritionPage, useQuickAddNutritionLog } from "@/hooks/use-nutrition-page";
 import { getTodayDateString } from "@/lib/date";
+import type { NutritionAnalysisCard } from "@/types/nutrition";
 
 export function NutritionPage() {
   const { data, isLoading, isError, refetch } = useNutritionPage();
   const addNutrition = useQuickAddNutritionLog();
+  const analyzeNutrition = useAnalyzeNutritionMeal();
   const [selectedByMeal, setSelectedByMeal] = useState<Record<string, string>>({});
   const [activeRecipeId, setActiveRecipeId] = useState<string | null>(null);
   const [activeMealId, setActiveMealId] = useState<string | null>(null);
   const [planLocked, setPlanLocked] = useState(false);
+  const [manualMealType, setManualMealType] = useState("dinner");
+  const [manualMealText, setManualMealText] = useState("");
+  const [analyzedMeal, setAnalyzedMeal] = useState<NutritionAnalysisCard | null>(null);
 
   const resolvedPlan = useMemo(() => {
     if (!data) {
@@ -104,6 +109,42 @@ export function NutritionPage() {
     });
   }
 
+  function analyzeManualMeal() {
+    const trimmed = manualMealText.trim();
+    if (!trimmed) return;
+
+    analyzeNutrition.mutate(
+      {
+        meal_type: manualMealType,
+        meal_description: trimmed,
+      },
+      {
+        onSuccess: (result) => {
+          setAnalyzedMeal(result);
+        },
+      },
+    );
+  }
+
+  function saveAnalyzedMeal() {
+    if (!analyzedMeal) return;
+
+    addNutrition.mutate({
+      date: getTodayDateString(),
+      meal_type: analyzedMeal.mealType,
+      food_name: analyzedMeal.title,
+      quantity: analyzedMeal.quantity,
+      serving_count: 1,
+      calories: analyzedMeal.macros.calories,
+      protein: analyzedMeal.macros.protein,
+      carbs: analyzedMeal.macros.carbs,
+      fats: analyzedMeal.macros.fats,
+      fiber: analyzedMeal.macros.fiber,
+      notes: analyzedMeal.notes,
+      source_type: analyzedMeal.sourceType,
+    });
+  }
+
   return (
     <div className="space-y-6">
       <section className="overflow-hidden rounded-[2.2rem] border border-white/6 bg-[linear-gradient(135deg,rgba(151,255,147,0.12),rgba(25,168,255,0.14)_38%,rgba(10,12,15,0.98)_74%)] p-6 shadow-[0_20px_64px_rgba(0,0,0,0.38)] sm:p-8">
@@ -134,7 +175,7 @@ export function NutritionPage() {
         <div className="space-y-6">
           <SectionCard
             title="Today's meal plan"
-            description="Choose the meal, lock the option, and keep the recipe detail visible while you log."
+            description="Choose from a fixed list for each meal type, then log the exact option you actually ate."
             action={<StatusChip label={`${resolvedPlan.length} meal blocks`} tone="secondary" />}
           >
             <div className="space-y-5">
@@ -218,18 +259,32 @@ export function NutritionPage() {
                     </div>
 
                     {activeMeal?.id === meal.id ? (
-                      <div className="mt-5 grid gap-4 lg:grid-cols-2">
+                      <div className="mt-5 space-y-3">
                         {meal.options.map((option) => (
-                          <MealOptionCard
+                          <button
+                            className={`flex w-full items-center justify-between rounded-[1.15rem] border px-4 py-4 text-left transition ${
+                              option.id === meal.selectedOptionId
+                                ? "border-primary/25 bg-primary/10"
+                                : "border-white/6 bg-white/[0.03] hover:border-white/12"
+                            }`}
                             key={option.id}
-                            onSelect={() => {
+                            onClick={() => {
                               setSelectedByMeal((current) => ({ ...current, [meal.id]: option.id }));
                               setActiveMealId(meal.id);
                               setActiveRecipeId(option.recipeId);
                             }}
-                            option={option}
-                            selected={option.id === meal.selectedOptionId}
-                          />
+                            type="button"
+                          >
+                            <div>
+                              <p className="text-sm font-semibold">{option.title}</p>
+                              <p className="mt-1 text-sm text-muted-foreground">{option.subtitle}</p>
+                              <div className="mt-2 flex flex-wrap gap-2">
+                                <StatusChip label={`${Math.round(option.macros.calories)} kcal`} tone="neutral" />
+                                <StatusChip label={`${Math.round(option.macros.protein)} g protein`} tone="secondary" />
+                              </div>
+                            </div>
+                            <StatusChip label={option.id === meal.selectedOptionId ? "Selected" : "Choose"} tone={option.id === meal.selectedOptionId ? "success" : "neutral"} />
+                          </button>
                         ))}
                       </div>
                     ) : null}
@@ -240,6 +295,78 @@ export function NutritionPage() {
           </SectionCard>
 
           <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+            <SectionCard
+              title="Describe a custom meal"
+              description="When you eat something outside the fixed list, describe it here and let OpenAI estimate the calories and macros."
+              action={<StatusChip label="OpenAI estimate" tone="warning" />}
+            >
+              <div className="space-y-4">
+                <label className="block">
+                  <p className="text-[0.68rem] uppercase tracking-[0.18em] text-muted-foreground">Meal type</p>
+                  <select
+                    className="mt-3 h-11 w-full rounded-[0.95rem] border border-white/8 bg-white/[0.04] px-3 text-sm font-semibold text-foreground outline-none transition focus:border-primary/45 focus:ring-2 focus:ring-primary/20"
+                    onChange={(event) => setManualMealType(event.target.value)}
+                    value={manualMealType}
+                  >
+                    {resolvedPlan.map((meal) => (
+                      <option className="bg-[#121212] text-foreground" key={meal.id} value={meal.name}>
+                        {formatMealLabel(meal.name)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <Textarea
+                  onChange={(event) => setManualMealText(event.target.value)}
+                  placeholder="Example: 2 chapatis, 1 bowl paneer bhurji, half cup curd, 1 tsp ghee"
+                  value={manualMealText}
+                />
+
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Button className="sm:flex-1" disabled={analyzeNutrition.isPending || !manualMealText.trim()} onClick={analyzeManualMeal}>
+                    {analyzeNutrition.isPending ? "Analyzing..." : "Analyze meal with AI"}
+                  </Button>
+                  <Button className="sm:flex-1" disabled={addNutrition.isPending || !analyzedMeal} onClick={saveAnalyzedMeal} variant="outline">
+                    {addNutrition.isPending ? "Saving..." : "Save analyzed meal"}
+                  </Button>
+                </div>
+
+                {analyzeNutrition.isError ? (
+                  <div className="rounded-[1.15rem] border border-white/6 bg-white/[0.03] px-4 py-3">
+                    <StatusChip label="AI unavailable" tone="warning" />
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">{analyzeNutrition.error.message}</p>
+                  </div>
+                ) : null}
+
+                {analyzedMeal ? (
+                  <div className="rounded-[1.35rem] border border-white/6 bg-[linear-gradient(180deg,rgba(25,168,255,0.08),rgba(16,18,22,0.96))] p-4">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="text-base font-semibold">{analyzedMeal.title}</p>
+                      <StatusChip label={formatMealLabel(analyzedMeal.mealType)} tone="secondary" />
+                    </div>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">{analyzedMeal.quantity}</p>
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                      <SummaryPill label="Calories" value={`${Math.round(analyzedMeal.macros.calories)} kcal`} />
+                      <SummaryPill label="Protein" value={`${Math.round(analyzedMeal.macros.protein)} g`} />
+                      <SummaryPill label="Carbs" value={`${Math.round(analyzedMeal.macros.carbs)} g`} />
+                      <SummaryPill label="Fats" value={`${Math.round(analyzedMeal.macros.fats)} g`} />
+                    </div>
+                    {analyzedMeal.notes ? <p className="mt-4 text-sm leading-6 text-muted-foreground">{analyzedMeal.notes}</p> : null}
+                    {analyzedMeal.assumptions.length ? (
+                      <div className="mt-4 space-y-2">
+                        <p className="text-[0.68rem] uppercase tracking-[0.18em] text-muted-foreground">Assumptions</p>
+                        {analyzedMeal.assumptions.map((assumption) => (
+                          <p className="text-sm leading-6 text-muted-foreground" key={assumption}>
+                            {assumption}
+                          </p>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            </SectionCard>
+
             <SectionCard
               title="Quick-add fuel"
               description="Fast additions when the day is moving and you still need clean nutrition control."

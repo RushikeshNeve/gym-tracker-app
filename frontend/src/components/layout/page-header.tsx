@@ -16,11 +16,11 @@ export function PageHeader({
   actions?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-      <div className="max-w-3xl">
+    <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+      <div className="max-w-3xl min-w-0">
         <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-primary">{eyebrow}</p>
-        <h2 className="mt-3 text-4xl font-black leading-none tracking-tight sm:text-5xl">{title}</h2>
-        <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">{description}</p>
+        <h2 className="mt-3 text-3xl font-black leading-none tracking-tight sm:text-4xl lg:text-5xl">{title}</h2>
+        <p className="mt-4 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base sm:leading-7">{description}</p>
         {chips?.length ? (
           <div className="mt-5 flex flex-wrap gap-2">
             {chips.map((chip) => (
@@ -29,7 +29,7 @@ export function PageHeader({
           </div>
         ) : null}
       </div>
-      {actions}
+      {actions ? <div className="w-full lg:w-auto lg:max-w-md">{actions}</div> : null}
     </div>
   );
 }

@@ -48,6 +48,25 @@ class NutritionLogRead(NutritionLogBase, TimestampFields):
     profile_id: int
 
 
+class NutritionMealAnalysisRequest(BaseModel):
+    meal_type: str
+    meal_description: str = Field(min_length=3)
+
+
+class NutritionMealAnalysisResult(BaseModel):
+    meal_type: str
+    food_name: str
+    quantity: str
+    calories: float = Field(ge=0)
+    protein: float = Field(ge=0)
+    carbs: float = Field(ge=0)
+    fats: float = Field(ge=0)
+    fiber: float = Field(ge=0)
+    notes: str = ""
+    assumptions: list[str] = Field(default_factory=list)
+    source_type: str = "ai_estimated"
+
+
 class NutritionTotals(BaseModel):
     calories: float
     protein: float
@@ -69,4 +88,3 @@ class WeeklyNutritionSummary(BaseModel):
     avg_calories: float
     avg_protein: float
     chart: list[ChartPoint]
-

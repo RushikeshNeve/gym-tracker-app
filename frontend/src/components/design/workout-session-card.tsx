@@ -15,21 +15,27 @@ export function WorkoutSessionCard({
 }) {
   return (
     <Card>
-      <CardContent className="p-5">
-        <div className="flex items-start justify-between gap-4">
-          <div>
+      <CardContent className="p-4 sm:p-5">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <p className="text-base font-semibold">{exercise.name}</p>
+              <p className="break-words text-base font-semibold">{exercise.name}</p>
               {exercise.setLabel ? <StatusChip label={exercise.setLabel} tone="warning" /> : null}
               <StatusChip label={exercise.muscleGroup} tone="secondary" />
               {exercise.pr ? <StatusChip label="PR ready" tone="success" /> : null}
             </div>
             <p className="mt-2 text-sm text-muted-foreground">
-              {exercise.setLabel ? `${exercise.reps} reps at ${exercise.weight}` : `${exercise.sets} sets x ${exercise.reps} reps at ${exercise.weight}`}
+              {exercise.inputMode === "duration"
+                ? exercise.setLabel
+                  ? `${exercise.duration ?? "00:00"} at ${exercise.weight}`
+                  : `${exercise.sets} timed sets at ${exercise.weight} for ${exercise.duration ?? "00:00"}`
+                : exercise.setLabel
+                  ? `${exercise.reps} reps at ${exercise.weight}`
+                  : `${exercise.sets} sets x ${exercise.reps} reps at ${exercise.weight}`}
             </p>
             {exercise.note ? <p className="mt-2 text-sm text-muted-foreground">{exercise.note}</p> : null}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between gap-2 sm:justify-end">
             {onRemove ? (
               <Button aria-label={`Remove ${exercise.name}`} onClick={onRemove} size="icon" variant="ghost">
                 <Trash2 className="size-4" />
@@ -43,7 +49,7 @@ export function WorkoutSessionCard({
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           <Metric label="Last best" value={exercise.previousBest} icon={<Trophy className="size-3.5" />} />
           <Metric label={exercise.setLabel ? "Set" : "Sets"} value={exercise.setLabel ?? exercise.sets} icon={<Timer className="size-3.5" />} />
-          <Metric label="Working load" value={exercise.weight} icon={<Bolt className="size-3.5" />} />
+          <Metric label={exercise.inputMode === "duration" ? "Set time" : "Working load"} value={exercise.inputMode === "duration" ? (exercise.duration ?? "00:00") : exercise.weight} icon={<Bolt className="size-3.5" />} />
         </div>
       </CardContent>
     </Card>
@@ -57,7 +63,7 @@ function Metric({ label, value, icon }: { label: string; value: string; icon: Re
         {icon}
         {label}
       </div>
-      <p className="mt-2 text-sm font-semibold">{value}</p>
+      <p className="mt-2 break-words text-sm font-semibold">{value}</p>
     </div>
   );
 }

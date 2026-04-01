@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     blob_api_base_url: str = "https://blob.vercel-storage.com"
     media_root: str = str(Path(__file__).resolve().parents[2] / "media")
     media_url_prefix: str = "/media"
+    openai_api_key: str | None = None
+    openai_nutrition_model: str = "gpt-4.1-mini"
 
     model_config = SettingsConfigDict(
         env_file=".env",

@@ -8,9 +8,9 @@ export function AppShell() {
   return (
     <div className="min-h-screen lg:flex">
       <SidebarNav />
-      <div className="flex min-h-screen flex-1 flex-col px-4 pb-28 pt-4 sm:px-6 lg:px-8 lg:pb-8">
+      <div className="flex min-h-screen flex-1 flex-col px-3 pb-28 pt-3 sm:px-6 sm:pt-4 lg:px-8 lg:pb-8">
         <TopHeader />
-        <main className="mx-auto flex w-full max-w-[92rem] flex-1 flex-col py-6">
+        <main className="mx-auto flex w-full max-w-[92rem] flex-1 flex-col py-5 sm:py-6">
           <Outlet />
         </main>
       </div>
@@ -18,4 +18,3 @@ export function AppShell() {
     </div>
   );
 }
-

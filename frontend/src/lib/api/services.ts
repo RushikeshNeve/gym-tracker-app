@@ -16,6 +16,8 @@ import type {
   MealPlanTemplate,
   MessageResponse,
   NutritionDailySummaryResponse,
+  NutritionMealAnalysisRequest,
+  NutritionMealAnalysisResult,
   NutritionLog,
   NutritionLogCreateRequest,
   NutritionLogUpdateRequest,
@@ -30,6 +32,7 @@ import type {
   Workout,
   WorkoutCreateRequest,
   WorkoutHistoryEntry,
+  WorkoutTimetableResponse,
 } from "@/types/api";
 
 export const api = {
@@ -46,9 +49,13 @@ export const api = {
     history: (exerciseName: string) => apiClient.get<WorkoutHistoryEntry[]>(`/workouts/history/${encodeURIComponent(exerciseName)}`),
     delete: (id: number) => apiClient.delete<MessageResponse>(`/workouts/${id}`),
   },
+  workoutTimetable: {
+    get: () => apiClient.get<WorkoutTimetableResponse>("/workout-timetable"),
+  },
   nutrition: {
     daily: (date: string) => apiClient.get<NutritionDailySummaryResponse>(`/nutrition/${date}`),
     create: (payload: NutritionLogCreateRequest) => apiClient.post<NutritionLog, NutritionLogCreateRequest>("/nutrition", payload),
+    analyze: (payload: NutritionMealAnalysisRequest) => apiClient.post<NutritionMealAnalysisResult, NutritionMealAnalysisRequest>("/nutrition/analyze", payload),
     update: (id: number, payload: NutritionLogUpdateRequest) => apiClient.patch<NutritionLog, NutritionLogUpdateRequest>(`/nutrition/${id}`, payload),
     delete: (id: number) => apiClient.delete<MessageResponse>(`/nutrition/${id}`),
     duplicate: (sourceDate: string, targetDate: string) => apiClient.post<MessageResponse>("/nutrition/duplicate", undefined, { source_date: sourceDate, target_date: targetDate }),

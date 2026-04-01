@@ -217,6 +217,7 @@ export type WorkoutExercise = TimestampFields & {
   weight: number;
   reps: number;
   sets: number;
+  duration_seconds: number | null;
   volume: number;
   near_failure: boolean;
   new_pr: string;
@@ -254,6 +255,7 @@ export type WorkoutCreateRequest = {
     weight: number;
     reps: number;
     sets: number;
+    duration_seconds?: number | null;
     near_failure?: boolean;
     notes?: string;
   }>;
@@ -265,6 +267,7 @@ export type WorkoutHistoryEntry = {
   weight: number;
   reps: number;
   sets: number;
+  duration_seconds: number | null;
   new_pr: string;
   session_type: string;
   is_outdoor: boolean;
@@ -281,6 +284,30 @@ export type Exercise = TimestampFields & {
   common_mistakes_json: string[];
   tips: string;
   matched: boolean;
+};
+
+export type WorkoutTimetableResponse = {
+  weekly_split: Array<{
+    day: string;
+    workout: string;
+  }>;
+  timetable_days: Array<{
+    id: string;
+    day_label: string;
+    title: string;
+    subtitle: string;
+    accent: "primary" | "secondary" | "warning";
+    notes: string[];
+    images: string[];
+    blocks: Array<{
+      category: string;
+      sets_reps: string;
+      options: Array<{
+        id: number;
+        name: string;
+      }>;
+    }>;
+  }>;
 };
 
 export type NutritionLog = TimestampFields & {
@@ -327,6 +354,25 @@ export type NutritionLogCreateRequest = {
 };
 
 export type NutritionLogUpdateRequest = Partial<Omit<NutritionLogCreateRequest, "date">>;
+
+export type NutritionMealAnalysisRequest = {
+  meal_type: string;
+  meal_description: string;
+};
+
+export type NutritionMealAnalysisResult = {
+  meal_type: string;
+  food_name: string;
+  quantity: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fats: number;
+  fiber: number;
+  notes: string;
+  assumptions: string[];
+  source_type: string;
+};
 
 export type HydrationLog = TimestampFields & {
   id: number;

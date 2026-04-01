@@ -27,6 +27,8 @@ FITNESS_USE_NULL_POOL=true
 FITNESS_STORAGE_BACKEND=vercel_blob
 FITNESS_BLOB_READ_WRITE_TOKEN=vercel_blob_rw_token
 FITNESS_BLOB_API_BASE_URL=https://blob.vercel-storage.com
+FITNESS_OPENAI_API_KEY=sk-...
+FITNESS_OPENAI_NUTRITION_MODEL=gpt-4.1-mini
 ```
 
 ### Migrations

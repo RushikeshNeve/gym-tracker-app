@@ -10,10 +10,10 @@ export function QuickActionStrip({ actions }: { actions: QuickAction[] }) {
       {actions.map((action) => {
         const item = typeof action === "string" ? { label: action } : action;
         return (
-        <Button className="justify-between rounded-[1.25rem]" disabled={item.disabled} key={item.label} onClick={item.onClick} variant="outline">
-          <span className="flex items-center gap-2">
+        <Button className="h-auto justify-between rounded-[1.25rem] px-4 py-3 text-left sm:h-11 sm:py-2" disabled={item.disabled} key={item.label} onClick={item.onClick} variant="outline">
+          <span className="flex min-w-0 items-center gap-2">
             <Bolt className="size-4 text-primary" />
-            {item.label}
+            <span className="truncate">{item.label}</span>
           </span>
           <ChevronRight className="size-4 text-muted-foreground" />
         </Button>

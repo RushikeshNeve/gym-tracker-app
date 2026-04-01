@@ -11,12 +11,12 @@ export function ChartSection({ trend }: { trend: DashboardTrend }) {
   return (
     <SectionCard title={trend.title} description={trend.description} className="h-full">
       <div className="space-y-5">
-        <div className="grid h-48 grid-cols-7 items-end gap-3">
+        <div className="grid h-44 grid-cols-7 items-end gap-2 sm:h-48 sm:gap-3">
           {trend.points.map((point) => {
             const height = ((point.value - min) / range) * 100;
             return (
-              <div className="flex h-full flex-col justify-end gap-3" key={point.label}>
-                <div className="text-center text-xs text-muted-foreground">
+              <div className="flex h-full min-w-0 flex-col justify-end gap-2 sm:gap-3" key={point.label}>
+                <div className="text-center text-[10px] text-muted-foreground sm:text-xs">
                   {point.value}
                   {trend.unit}
                 </div>
@@ -32,7 +32,7 @@ export function ChartSection({ trend }: { trend: DashboardTrend }) {
                     style={{ height: `${Math.max(height, 10)}%` }}
                   />
                 </div>
-                <div className="text-center text-xs uppercase tracking-[0.16em] text-muted-foreground">{point.label}</div>
+                <div className="text-center text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:text-xs sm:tracking-[0.16em]">{point.label}</div>
               </div>
             );
           })}

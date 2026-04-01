@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Pencil, Plus, Ruler, Save, Trash2, Weight } from "lucide-react";
 
 import { ErrorState } from "@/components/design/error-state";
@@ -55,6 +55,16 @@ export function BodyMetricsPage() {
   const formSectionRef = useRef<HTMLDivElement | null>(null);
 
   const isSaving = createMetric.isPending || updateMetric.isPending;
+
+  useEffect(() => {
+    if (editingId == null || !data) return;
+
+    const stillExists = data.entries.some((entry) => entry.id === editingId);
+    if (!stillExists) {
+      resetForm();
+      setFormFeedback({ tone: "warning", message: "That entry no longer exists, so the form was reset to a fresh add state." });
+    }
+  }, [data, editingId]);
 
   if (isLoading) return <LoadingShell />;
   if (isError || !data) return <ErrorState title="Body metrics could not load" description="The body-metrics history did not arrive from the API." onRetry={() => void refetch()} />;
@@ -155,60 +165,60 @@ export function BodyMetricsPage() {
 
       <div className="grid gap-6 xl:grid-cols-[0.92fr_1.08fr]">
         <div ref={formSectionRef}>
-        <SectionCard
-          title={formTitle}
-          description={formDescription}
-          action={<StatusChip label={editingId ? `Editing #${editingId}` : "New entry"} tone={editingId ? "warning" : "success"} />}
-        >
-          <div className="space-y-5">
-            {formFeedback ? (
-              <div className="rounded-[1.15rem] border border-white/6 bg-white/[0.03] px-4 py-3">
-                <StatusChip label={formFeedback.tone === "success" ? "Saved" : "Needs attention"} tone={formFeedback.tone} />
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{formFeedback.message}</p>
+          <SectionCard
+            title={formTitle}
+            description={formDescription}
+            action={<StatusChip label={editingId ? `Editing #${editingId}` : "New entry"} tone={editingId ? "warning" : "success"} />}
+          >
+            <div className="space-y-5">
+              {formFeedback ? (
+                <div className="rounded-[1.15rem] border border-white/6 bg-white/[0.03] px-4 py-3">
+                  <StatusChip label={formFeedback.tone === "success" ? "Saved" : "Needs attention"} tone={formFeedback.tone} />
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{formFeedback.message}</p>
+                </div>
+              ) : null}
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <Field
+                  icon={<Weight className="size-4 text-primary" />}
+                  label="Date"
+                  type="date"
+                  value={form.date}
+                  onChange={(value) => updateField("date", value)}
+                />
+                <Field
+                  icon={<Weight className="size-4 text-primary" />}
+                  label="Weight (kg)"
+                  placeholder="78.5"
+                  value={form.bodyWeight}
+                  onChange={(value) => updateField("bodyWeight", value)}
+                />
+                <Field label="Waist (cm)" placeholder="82" value={form.waist} onChange={(value) => updateField("waist", value)} />
+                <Field label="Hips (cm)" placeholder="96" value={form.hips} onChange={(value) => updateField("hips", value)} />
+                <Field label="Chest (cm)" placeholder="102" value={form.chest} onChange={(value) => updateField("chest", value)} />
+                <Field label="Arms (cm)" placeholder="36" value={form.arms} onChange={(value) => updateField("arms", value)} />
+                <Field label="Thighs (cm)" placeholder="58" value={form.thighs} onChange={(value) => updateField("thighs", value)} />
+                <Field label="Neck (cm)" placeholder="38" value={form.neck} onChange={(value) => updateField("neck", value)} />
+                <Field label="Body fat %" placeholder="18" value={form.bodyFat} onChange={(value) => updateField("bodyFat", value)} />
               </div>
-            ) : null}
 
-            <div className="grid gap-3 sm:grid-cols-2">
-              <Field
-                icon={<Weight className="size-4 text-primary" />}
-                label="Date"
-                type="date"
-                value={form.date}
-                onChange={(value) => updateField("date", value)}
+              <Textarea
+                onChange={(event) => updateField("notes", event.target.value)}
+                placeholder="Optional note: lower waist this week, weight up from sodium, chest pump measurement, etc."
+                value={form.notes}
               />
-              <Field
-                icon={<Weight className="size-4 text-primary" />}
-                label="Weight (kg)"
-                placeholder="78.5"
-                value={form.bodyWeight}
-                onChange={(value) => updateField("bodyWeight", value)}
-              />
-              <Field label="Waist (cm)" placeholder="82" value={form.waist} onChange={(value) => updateField("waist", value)} />
-              <Field label="Hips (cm)" placeholder="96" value={form.hips} onChange={(value) => updateField("hips", value)} />
-              <Field label="Chest (cm)" placeholder="102" value={form.chest} onChange={(value) => updateField("chest", value)} />
-              <Field label="Arms (cm)" placeholder="36" value={form.arms} onChange={(value) => updateField("arms", value)} />
-              <Field label="Thighs (cm)" placeholder="58" value={form.thighs} onChange={(value) => updateField("thighs", value)} />
-              <Field label="Neck (cm)" placeholder="38" value={form.neck} onChange={(value) => updateField("neck", value)} />
-              <Field label="Body fat %" placeholder="18" value={form.bodyFat} onChange={(value) => updateField("bodyFat", value)} />
-            </div>
 
-            <Textarea
-              onChange={(event) => updateField("notes", event.target.value)}
-              placeholder="Optional note: lower waist this week, weight up from sodium, chest pump measurement, etc."
-              value={form.notes}
-            />
-
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Button className="gap-2 sm:flex-1" disabled={isSaving} onClick={() => void handleSubmit()}>
-                {editingId ? <Save className="size-4" /> : <Plus className="size-4" />}
-                {isSaving ? "Saving..." : editingId ? "Update entry" : "Add entry"}
-              </Button>
-              <Button className="sm:flex-1" disabled={isSaving} onClick={() => resetForm()} variant="outline">
-                {editingId ? "Cancel edit" : "Reset form"}
-              </Button>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button className="gap-2 sm:flex-1" disabled={isSaving} onClick={() => void handleSubmit()}>
+                  {editingId ? <Save className="size-4" /> : <Plus className="size-4" />}
+                  {isSaving ? "Saving..." : editingId ? "Update entry" : "Add entry"}
+                </Button>
+                <Button className="sm:flex-1" disabled={isSaving} onClick={() => resetForm()} variant="outline">
+                  {editingId ? "Cancel edit" : "Reset form"}
+                </Button>
+              </div>
             </div>
-          </div>
-        </SectionCard>
+          </SectionCard>
         </div>
 
         <SectionCard
@@ -258,7 +268,16 @@ export function BodyMetricsPage() {
                     <Button
                       className="gap-2"
                       disabled={deleteMetric.isPending}
-                      onClick={() => deleteMetric.mutate(entry.id)}
+                      onClick={() =>
+                        deleteMetric.mutate(entry.id, {
+                          onSuccess: () => {
+                            if (editingId === entry.id) {
+                              resetForm(false);
+                              setFormFeedback({ tone: "warning", message: "The entry you were editing was deleted. The form is ready for a new entry now." });
+                            }
+                          },
+                        })
+                      }
                       variant="ghost"
                     >
                       <Trash2 className="size-4" />

@@ -13,6 +13,7 @@ class WorkoutExerciseBase(BaseModel):
     weight: float = Field(default=0, ge=0)
     reps: int = Field(default=0, ge=0)
     sets: int = Field(default=1, ge=1)
+    duration_seconds: int | None = Field(default=None, ge=1)
     near_failure: bool = False
     notes: str = ""
 
@@ -57,7 +58,7 @@ class WorkoutHistoryEntry(BaseModel):
     weight: float
     reps: int
     sets: int
+    duration_seconds: int | None = None
     new_pr: str
     session_type: str
     is_outdoor: bool
-

@@ -37,10 +37,10 @@ class WorkoutExercise(TimestampMixin, Base):
     weight: Mapped[float] = mapped_column(Float, default=0.0)
     reps: Mapped[int] = mapped_column(Integer, default=0)
     sets: Mapped[int] = mapped_column(Integer, default=1)
+    duration_seconds: Mapped[int | None] = mapped_column(Integer, nullable=True)
     volume: Mapped[float] = mapped_column(Float, default=0.0)
     near_failure: Mapped[bool] = mapped_column(default=False)
     new_pr: Mapped[str] = mapped_column(String(32), default="")
     notes: Mapped[str] = mapped_column(Text, default="")
 
     workout = relationship("Workout", back_populates="exercises")
-

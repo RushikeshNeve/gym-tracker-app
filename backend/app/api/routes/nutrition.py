@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 from app.api.deps import get_profile
 from app.db.session import get_db
 from app.schemas.common import MessageResponse
-from app.schemas.nutrition import NutritionDailySummary, NutritionLogCreate, NutritionLogRead, NutritionLogUpdate
+from app.schemas.nutrition import NutritionDailySummary, NutritionLogCreate, NutritionLogRead, NutritionLogUpdate, NutritionMealAnalysisRequest, NutritionMealAnalysisResult
+from app.services.nutrition_ai_service import NutritionAnalysisError, analyze_meal_with_openai
 from app.services.nutrition_service import copy_nutrition_logs, create_nutrition_log, delete_nutrition_log, get_daily_nutrition, update_nutrition_log
 
 
@@ -31,6 +32,14 @@ def create_nutrition_route(payload: NutritionLogCreate, db: Session = Depends(ge
     return NutritionLogRead.model_validate(create_nutrition_log(db, profile, payload))
 
 
+@router.post("/analyze", response_model=NutritionMealAnalysisResult)
+def analyze_nutrition_route(payload: NutritionMealAnalysisRequest, profile=Depends(get_profile)) -> NutritionMealAnalysisResult:
+    try:
+        return analyze_meal_with_openai(payload)
+    except NutritionAnalysisError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+
 @router.patch("/{log_id}", response_model=NutritionLogRead)
 def update_nutrition_route(log_id: int, payload: NutritionLogUpdate, db: Session = Depends(get_db), profile=Depends(get_profile)) -> NutritionLogRead:
     item = update_nutrition_log(db, profile, log_id, payload)
@@ -50,4 +59,3 @@ def delete_nutrition_route(log_id: int, db: Session = Depends(get_db), profile=D
 def duplicate_meals(source_date: str, target_date: str, db: Session = Depends(get_db), profile=Depends(get_profile)) -> MessageResponse:
     copied = copy_nutrition_logs(db, profile, date.fromisoformat(source_date), date.fromisoformat(target_date))
     return MessageResponse(message=f"Copied {copied} meals")
-

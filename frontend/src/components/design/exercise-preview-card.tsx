@@ -13,18 +13,18 @@ export function ExercisePreviewCard({ preview }: { preview: WorkoutPageData["sel
       action={<StatusChip label={preview.muscleGroup} tone="secondary" />}
     >
       <div className="space-y-5">
-        <div className="rounded-[1.5rem] border border-white/6 bg-[linear-gradient(135deg,rgba(25,168,255,0.10),rgba(15,17,21,0.96))] p-5">
-          <div className="flex items-center gap-3">
+        <div className="rounded-[1.5rem] border border-white/6 bg-[linear-gradient(135deg,rgba(25,168,255,0.10),rgba(15,17,21,0.96))] p-4 sm:p-5">
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
             <div className="rounded-[1rem] bg-secondary/12 p-3 text-secondary">
               <PlayCircle className="size-5" />
             </div>
-            <div>
-              <p className="text-sm font-semibold">{preview.youtubeTitle}</p>
+            <div className="min-w-0">
+              <p className="break-all text-sm font-semibold">{preview.youtubeTitle}</p>
               <p className="mt-1 text-sm text-muted-foreground">Video area placeholder for future embed wiring.</p>
             </div>
           </div>
         </div>
-        <div className="grid gap-4 xl:grid-cols-3">
+        <div className="grid gap-4 lg:grid-cols-3">
           <ListBlock title="Instructions" items={preview.instructions} />
           <ListBlock title="Tips" items={preview.tips} tone="secondary" />
           <ListBlock title="Common mistakes" items={preview.mistakes} tone="warning" icon={<TriangleAlert className="size-4 text-warning" />} />

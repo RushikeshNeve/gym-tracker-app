@@ -95,3 +95,13 @@ export type NutritionPageData = {
   energyBalance: EnergyBalance;
   mealLog: MealLogEntry[];
 };
+
+export type NutritionAnalysisCard = {
+  mealType: string;
+  title: string;
+  quantity: string;
+  macros: RecipeMacro;
+  notes: string;
+  assumptions: string[];
+  sourceType: string;
+};

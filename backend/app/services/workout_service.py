@@ -9,9 +9,16 @@ from app.schemas.workouts import WorkoutCreate
 from app.utils.calculations import estimate_calories_burned
 
 
-def calculate_pr_status(db: Session, profile: UserProfile, exercise_name: str, weight: float, reps: int) -> str:
+def calculate_pr_status(
+    db: Session,
+    profile: UserProfile,
+    exercise_name: str,
+    weight: float,
+    reps: int,
+    duration_seconds: int | None = None,
+) -> str:
     rows = db.execute(
-        select(WorkoutExercise.weight, WorkoutExercise.reps)
+        select(WorkoutExercise.weight, WorkoutExercise.reps, WorkoutExercise.duration_seconds)
         .join(Workout, Workout.id == WorkoutExercise.workout_id)
         .where(
             Workout.profile_id == profile.id,
@@ -23,7 +30,13 @@ def calculate_pr_status(db: Session, profile: UserProfile, exercise_name: str, w
         return "First"
     max_weight = max(float(row.weight or 0) for row in rows)
     best_reps_at_max = max(int(row.reps or 0) for row in rows if float(row.weight or 0) == max_weight)
-    if weight > max_weight or (weight == max_weight and reps > best_reps_at_max):
+    best_duration_at_max = max(int(row.duration_seconds or 0) for row in rows if float(row.weight or 0) == max_weight)
+    current_duration = int(duration_seconds or 0)
+    if (
+        weight > max_weight
+        or (weight == max_weight and reps > best_reps_at_max)
+        or (weight == max_weight and reps == best_reps_at_max and current_duration > best_duration_at_max)
+    ):
         return "PR"
     return ""
 
@@ -47,7 +60,14 @@ def create_workout(db: Session, profile: UserProfile, payload: WorkoutCreate) ->
     db.add(workout)
     db.flush()
     for item in payload.exercises:
-        pr_status = calculate_pr_status(db, profile, item.exercise_name, float(item.weight), int(item.reps))
+        pr_status = calculate_pr_status(
+            db,
+            profile,
+            item.exercise_name,
+            float(item.weight),
+            int(item.reps),
+            item.duration_seconds,
+        )
         volume = float(item.weight) * int(item.reps) * int(item.sets)
         db.add(
             WorkoutExercise(
@@ -57,6 +77,7 @@ def create_workout(db: Session, profile: UserProfile, payload: WorkoutCreate) ->
                 weight=item.weight,
                 reps=item.reps,
                 sets=item.sets,
+                duration_seconds=item.duration_seconds,
                 volume=volume,
                 near_failure=item.near_failure,
                 new_pr=pr_status,
@@ -102,6 +123,7 @@ def recent_activity(db: Session, profile: UserProfile, limit: int = 10) -> list[
             WorkoutExercise.weight,
             WorkoutExercise.reps,
             WorkoutExercise.sets,
+            WorkoutExercise.duration_seconds,
             WorkoutExercise.new_pr,
         )
         .join(WorkoutExercise, WorkoutExercise.workout_id == Workout.id)
@@ -180,6 +202,7 @@ def exercise_history(db: Session, profile: UserProfile, exercise_name: str, limi
             "weight": float(row.weight or 0),
             "reps": int(row.reps or 0),
             "sets": int(row.sets or 0),
+            "duration_seconds": int(row.duration_seconds) if row.duration_seconds is not None else None,
             "new_pr": row.new_pr or "",
             "session_type": row.session_type or "Workout 1",
             "is_outdoor": bool(row.is_outdoor),

@@ -18,11 +18,40 @@ export type WorkoutExercise = {
   muscleGroup: string;
   sets: string;
   reps: string;
+  duration?: string;
   weight: string;
   previousBest: string;
   pr: boolean;
   setLabel?: string;
   note?: string;
+  inputMode?: "reps" | "duration";
+};
+
+export type TimetableExerciseOption = {
+  id: number;
+  name: string;
+};
+
+export type TimetableOptionGroup = {
+  category: string;
+  options: TimetableExerciseOption[];
+  setsReps: string;
+};
+
+export type TimetableDay = {
+  id: string;
+  dayLabel: string;
+  title: string;
+  subtitle: string;
+  accent: "primary" | "secondary" | "warning";
+  notes?: string[];
+  images: string[];
+  blocks: TimetableOptionGroup[];
+};
+
+export type WorkoutTimetableData = {
+  weeklySplit: Array<{ day: string; workout: string }>;
+  timetableDays: TimetableDay[];
 };
 
 export type WorkoutPageData = {

@@ -5,11 +5,11 @@ import { StatusChip } from "@/components/design/status-chip";
 
 export function TopHeader() {
   return (
-    <header className="glass-panel sticky top-0 z-30 flex items-center justify-between rounded-[1.6rem] border border-white/6 px-5 py-4">
-      <div>
+    <header className="glass-panel sticky top-0 z-30 flex flex-col gap-4 rounded-[1.6rem] border border-white/6 px-4 py-3 sm:px-5 sm:py-4 md:flex-row md:items-center md:justify-between">
+      <div className="min-w-0">
         <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Today status</p>
         <div className="mt-2 flex flex-wrap items-center gap-3">
-          <h1 className="font-display text-2xl font-black tracking-tight sm:text-3xl">Fitness Tracker</h1>
+          <h1 className="font-display text-xl font-black tracking-tight sm:text-3xl">Fitness Tracker</h1>
           <StatusChip label="Live backend" tone="success" />
           <StatusChip label="Ready to log" tone="secondary" />
         </div>
