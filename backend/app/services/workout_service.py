@@ -185,6 +185,7 @@ def exercise_history(db: Session, profile: UserProfile, exercise_name: str, limi
             WorkoutExercise.weight,
             WorkoutExercise.reps,
             WorkoutExercise.sets,
+            WorkoutExercise.duration_seconds,
             WorkoutExercise.new_pr,
         )
         .join(WorkoutExercise, WorkoutExercise.workout_id == Workout.id)
